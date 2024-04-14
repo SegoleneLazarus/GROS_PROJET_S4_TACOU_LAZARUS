@@ -3,12 +3,11 @@
 float randfm11() {
   srand(time(NULL));
   constexpr int N = 100;
-
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_int_distribution<int> dist(0, 1);
   float res = 0;
   for (int i = 1; i < N; i++) {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist(0, 1);
     float random_number = dist(mt);
     res += random_number / pow(2, i);
   }
@@ -94,11 +93,11 @@ float loi_uniforme(float borne_bas, float borne_haut) {
   return random;
 }
 
-// int main() {
-//   for (int i = 0; i < 10; i++) {
-//     std::cout << randfm11() << std::endl;
-//     std::cout << loi_uniforme(0, 1) << std::endl;
-//     std::cout << expo(1) << std::endl;
-//   }
-//   return 0;
-// }
+int main() {
+  for (int i = 0; i < 10; i++) {
+    std::cout << randfm11() << std::endl;
+    std::cout << loi_uniforme(0, 1) << std::endl;
+    std::cout << expo(1) << std::endl;
+  }
+  return 0;
+}
