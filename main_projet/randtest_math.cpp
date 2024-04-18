@@ -173,20 +173,20 @@ int assign_DND_alignement(int biome) {
 
 // test CLT
 
-int main() {
-  int tab[200];
-  float i = 0.f;
-  int nb_cases = 40;
-  for (int j = 0; j < nb_cases + 1; j++)
-    tab[j] = 0;
-  for (int k = 0; k < 1000; k++) {
-    float exemple = CLT(50);
-    i = 0.f;
-    while (exemple > i / float(nb_cases))
-      i++;
-    tab[int(i)]++;
-  }
-  for (int j = 0; j < nb_cases + 1; j++)
-    std::cout << tab[j] << std::endl;
-  return 0;
-}
+  // int main() {
+  //   int tab[200];
+  //   float i = 0.f;
+  //   int nb_cases = 40;
+  //   for (int j = 0; j < nb_cases + 1; j++)
+  //     tab[j] = 0;
+  //   for (int k = 0; k < 1000; k++) {
+  //     float exemple = CLT(50);
+  //     i = 0.f;
+  //     while (exemple > i / float(nb_cases))
+  //       i++;
+  //     tab[int(i)]++;
+  //   }
+  //   for (int j = 0; j < nb_cases + 1; j++)
+  //     std::cout << tab[j] << std::endl;
+  //   return 0;
+  // }

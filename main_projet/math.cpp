@@ -1,4 +1,4 @@
-#include "math.hpp"
+
 
 void assign_biomes(std::vector<int> tableau_de_biomes{}) {
   // on divise le jeu en des cubes imaginaires que l’on va explorer selon la
@@ -12,7 +12,7 @@ void assign_biomes(std::vector<int> tableau_de_biomes{}) {
   // enpartant d’un coin en bas pour aller vers le coin de l’autre coté de la
   // base, en haut biome est un int allant de 1 à 3, 1 est la foret rouge,2 le
   // royaume champignon et 3 l’océan sauvage
-  int nbcB = 10; // nombre de cases de biomes
+  // nombre de cases de biomes
 
   for (int i = 0; i < nbcB; i++) // parcours la hauteur, a c'est le
                                  // nombre de cases biome dans le cube
@@ -21,7 +21,7 @@ void assign_biomes(std::vector<int> tableau_de_biomes{}) {
     {
       for (int k = 0; k < nbcB; k++) // parcours les lignes
       {
-        int compteur = compteur;
+        int compteur = k + j * nbcB + i * nbcB * nbcB;
         if (compteur = 0)
           tableau_de_biomes[0] = deX(3) - 1; // renvoit 0 1 ou 2
         else {

@@ -14,6 +14,21 @@
 
 const float pi = glm::radians(180.0f);
 
+void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids) {
+  for (int i = 0; i < nombre_boids; i++) {
+    Boid bdt{};
+    boids_tab.push_back(bdt);
+  }
+}
+
+void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids) {
+  if (nombre_boids > boids_tab.size()) {
+    pushb_boids(boids_tab, nombre_boids - boids_tab.size());
+  } else if (nombre_boids < boids_tab.size()) {
+    boids_tab.resize(nombre_boids);
+  }
+}
+
 struct EarthProgram {
   p6::Shader m_Program;
 
@@ -55,6 +70,14 @@ struct MoonProgram {
 int main() {
   auto ctx = p6::Context{{1280, 720, "TP3 EX1"}};
   ctx.maximize_window();
+
+  // initialize boids_tab
+  std::vector<Boid> boids_tab;
+  pushb_boids(boids_tab, 40);
+
+  float alignement_force = 0.5;
+  float separation_force = 0.5;
+  float cohesion_force = 0.5;
 
   TrackballCamera camera;
   ctx.mouse_moved = [&](p6::MouseMove event) {
@@ -260,6 +283,12 @@ int main() {
     }
 
     glBindVertexArray(0);
+
+    for (auto &boidy : boids_tab) {
+      boidy.draw_boid(ctx);
+      boidy.deplacement_boids(boids_tab, cohesion_force, separation_force,
+                              alignement_force);
+    }
   };
 
   // Should be done last. It starts the infinite loop.
