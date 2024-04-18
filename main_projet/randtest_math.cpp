@@ -136,41 +136,6 @@ CLT2D(int precision) // returns a random vector ; first it generates a random
   return random;
 }
 
-int assign_DND_alignement(int biome) {
-  // on va définir le biome aléatoirement seloin une grille de 9 cases et à
-  // l'aide d'une distribution normale centrée sur l'une de ces cases
-
-  // on définie sur quelle case est centrée la distribution, le tableau
-  // imaginaire va de 1,1 à -1,-1 comme l'écran opengl
-  if (biome == 1)
-    glm::vec2 centre(0.0f, -0.5f);                // foret rouge
-  elif (biome == 2) glm::vec2 centre(0.5f, 0.0f); // royaume champignon
-  else glm::vec2 centre(-0.5f, 0.5f);             // océan sauvage
-  glm::vec2 position = centre + CLT2D(50);
-
-  // déterminer l'alignement en fonction de la position sur la grille imaginaire, de haut en gauche à bas en droite, 
-  float x = position.x;
-  float y = position.y;
-  if (y > 0.333) {
-    if (x < -0.333)
-      return 1;
-    elif (x < 0.333) return 2;
-    else return 3;
-  }
-  elif (y > -0.333) {
-    if (x < -0.333)
-      return 4;
-    elif (x < 0.333) return 5;
-    else return 6;
-  }
-  else {
-    if (x < -0.333)
-      return 7;
-    elif (x < 0.333) return 8;
-    else return 9;
-  }
-}
-
 // test CLT
 
   // int main() {

@@ -142,20 +142,20 @@ float CLT() // return a random number from a standard normal distribution
   //  (écart type de loi uniforme / sqrt(n))
 }
 
-int main() {
-  int tab[200];
-  float i = 0.f;
-  int nb_cases = 20;
-  for (int j = 0; j < nb_cases + 1; j++)
-    tab[j] = 0;
-  for (int k = 0; k < 1000; k++) {
-    float exemple = CLT();
-    i = 0.f;
-    while (exemple > i / float(nb_cases))
-      i++;
-    tab[int(i)]++;
-  }
-  for (int j = 0; j < nb_cases + 1; j++)
-    std::cout << tab[j] << std::endl;
-  return 0;
-}
+// int main() {
+//   int tab[200];
+//   float i = 0.f;
+//   int nb_cases = 20;
+//   for (int j = 0; j < nb_cases + 1; j++)
+//     tab[j] = 0;
+//   for (int k = 0; k < 1000; k++) {
+//     float exemple = CLT();
+//     i = 0.f;
+//     while (exemple > i / float(nb_cases))
+//       i++;
+//     tab[int(i)]++;
+//   }
+//   for (int j = 0; j < nb_cases + 1; j++)
+//     std::cout << tab[j] << std::endl;
+//   return 0;
+// }

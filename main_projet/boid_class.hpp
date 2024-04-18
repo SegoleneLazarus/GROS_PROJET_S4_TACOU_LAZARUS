@@ -9,16 +9,18 @@
 #include <random>
 #include <time.h>
 
-
 glm::vec3 normalize_to_vit(glm::vec3 position, glm::vec3 vitesse); // 3D
-
-void spawn_boids_repartition_exp(const std::vector<Boid> &boids_tab); // 3D
 
 struct Boid {
 private:
   float separationRadius;
   float cohesionRadius;
   float alignementRadius;
+
+  float separationForce;
+  float cohesionForce;
+  float alignementForce;
+  int DND_alignement;
 
 public:
   glm::vec3 pos;
@@ -28,7 +30,8 @@ public:
         vit(loi_uniforme(-0.01, 0.01), loi_uniforme(-0.01, 0.01),
             loi_uniforme(-0.01, 0.01)),
         separationRadius(sepRad), cohesionRadius(cohRad),
-        alignementRadius(aliRad){};
+        alignementRadius(aliRad){}, separationForce(1), cohesionForce(1),
+        alignementForce(1), DND_alignement(5);
 
   void limites() { // 3D
     if (abs(pos.x) >= 1)
@@ -54,8 +57,7 @@ public:
         vit + somme_vit * (1.f / nb_Bproches) * alignementForce * 10.f, vit);
   }
 
-  void separation(const std::vector<Boid> &boids_tab,
-                  float separationForce) { // 3D
+  void separation(const std::vector<Boid> &boids_tab) { // 3D
     float distance_mini = 10;
     glm::vec3 this_minus_other_pos(0.0f, 0.0f, 0.0f);
 
@@ -79,7 +81,7 @@ public:
     }
   }
 
-  void cohesion(const std::vector<Boid> &boids_tab, float cohesionForce) { // 3D
+  void cohesion(const std::vector<Boid> &boids_tab) { // 3D
     // version où tout les autres boids influencent la direction de notre boid
     // de manière inversement proportionelle à la distance
     glm::vec3 somme_other_dif_pos(0.0f, 0.0f, 0.0f);
@@ -96,13 +98,10 @@ public:
                            vit);
   }
 
-  void deplacement_boids(const std::vector<Boid> &boids_tab, // 3D
-                         const float cohesion_force,
-                         const float separation_force,
-                         const float alignement_force) {
-    this->cohesion(boids_tab, cohesion_force);
-    this->separation(boids_tab, separation_force);
-    this->alignement(boids_tab, alignement_force);
+  void deplacement_boids(const std::vector<Boid> &boids_tab) { // 3D
+    this->cohesion(boids_tab);
+    this->separation(boids_tab);
+    this->alignement(boids_tab);
     pos = pos + vit;
     this->limites();
   }
@@ -132,7 +131,7 @@ public:
     return tableau_de_biomes[k + j * nbcB + i * nbcB * nbcB];
   } // simple ^^
 
-  int assign_DND_alignement(std::vector<int> tableau_de_biomes{}) {
+  void assign_DND_alignement(std::vector<int> tableau_de_biomes{}) {
     // on va définir le biome aléatoirement seloin une grille de 9 cases et à
     // l'aide d'une distribution normale centrée sur l'une de ces cases
 
@@ -154,22 +153,94 @@ public:
     float y = position.y;
     if (y > 0.333) {
       if (x < -0.333)
-        return 1;
-      elif (x < 0.333) return 2;
-      else return 3;
+        DND_alignement = 1;
+      elif (x < 0.333) DND_alignement = 2;
+      else DND_alignement = 3;
     }
     elif (y > -0.333) {
       if (x < -0.333)
-        return 4;
-      elif (x < 0.333) return 5;
-      else return 6;
+        DND_alignement = 4;
+      elif (x < 0.333) DND_alignement = 5;
+      else DND_alignement = 6;
     }
     else {
       if (x < -0.333)
-        return 7;
-      elif (x < 0.333) return 8;
-      else return 9;
+        DND_alignement = 7;
+      elif (x < 0.333) DND_alignement = 8;
+      else DND_alignement = 9;
     }
+  }
+
+  void
+  apply_DND_alignment(const std::vector<Boid> &
+                          boids_tab) { // ton one boid, à mettre dans une boucle
+    float multiplicateur 2;
+    float diviseur = 1 / multiplicateur;
+    if (DND_alignement == 1) {
+      cohesionForce *= multiplicateur;
+      vit *= diviseur;
+
+      alignementForce *= multiplicateur;
+      separationForce *= diviseur;
+    }
+    elif (DND_alignement == 2) {
+      cohesionForce *= multiplicateur;
+      vit *= diviseur;
+    }
+    elif (DND_alignement == 3) {
+      cohesionForce *= multiplicateur;
+      vit *= diviseur;
+
+      alignementForce *= diviseur;
+      cohesionForce *= diviseur;
+    }
+    elif (DND_alignement == 4) {
+
+      alignementForce *= multiplicateur;
+      separationForce *= diviseur;
+    }
+    elif (DND_alignement == 5) {}
+    elif (DND_alignement == 6) {
+      alignementForce *= diviseur;
+      cohesionForce *= diviseur;
+    }
+    elif (DND_alignement == 7) {
+      separationForce *= multiplicateur;
+      vitesse *= multiplicateur;
+
+      alignementForce *= multiplicateur;
+      separationForce *= diviseur;
+    }
+    elif (DND_alignement == 8) {
+      separationForce *= multiplicateur;
+      vitesse *= multiplicateur;
+    }
+    else {
+      separationForce *= multiplicateur;
+      vitesse *= multiplicateur;
+
+      alignementForce *= diviseur;
+      cohesionForce *= diviseur;
+    }
+  }
+
+  void spawn_boids_repartition_exp( // 3D
+      const std::vector<Boid>
+          &boids_tab) { // objectif : donner une répartition du spawn des boids
+                        // suivant une probabilité exponentielle qui fait
+                        // apparaitre principalement vers les extrémités du
+                        // cube, le spawn étant centré
+    // cette fonction s'applique sur un seul boid, il faut la mettre dans une
+    // boucle
+
+    float random = expo(1);
+    while (random > 4) // on néglige les résultats extrèmes;
+      random = expo(1);
+    float norme =
+        (4 - expo(1)) *
+        0.25; // en gros 1-expo/4 pour bien avoir  bc de boids vers l'extérieur
+    pos = normalize(.pos) *
+          norme; // on a pas changé la direction, seulement la norme
   }
 
   

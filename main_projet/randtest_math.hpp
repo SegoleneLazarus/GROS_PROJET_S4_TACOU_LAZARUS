@@ -30,4 +30,3 @@ float CLT(int precision);
 
 glm::vec2 CLT2D(int precision);
 
-int assign_DND_alignement(int biome);
