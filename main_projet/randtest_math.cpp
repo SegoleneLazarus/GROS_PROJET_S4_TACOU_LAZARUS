@@ -1,19 +1,19 @@
 #include "randtest_math.hpp"
 
-float randfm11() {
-  srand(time(NULL));
-  constexpr int N = 100;
-  std::random_device rd;
-  std::mt19937 mt(rd());
-  std::uniform_int_distribution<int> dist(0, 1);
-  float res = 0;
-  for (int i = 1; i < N; i++) {
-    float random_number = dist(mt);
-    res += random_number / pow(2, i);
-  }
+double rand01() {
+  thread_local std::default_random_engine gen{time(NULL)};
+  thread_local auto distrib = std::uniform_real_distribution<double>{0.0, 1.0};
 
-  return res;
+  return distrib(gen);
 }
+
+// double rand01() {
+//   thread_local std::default_random_engine gen{std::random_device{}()};
+//   thread_local auto distrib =
+//   std::uniform_real_distribution<double>{0.0, 1.0};
+
+//   return distrib(gen);
+// }
 
 /*void fonction_rand_1()
 {
@@ -31,7 +31,7 @@ float randfm11() {
 }*/
 
 int pile_ou_face(double p) {
-  double random = randfm11();
+  double random = rand01();
   if (p > random) {
     return 0;
   } else {
@@ -40,7 +40,7 @@ int pile_ou_face(double p) {
 }
 
 int de6_eq() {
-  double random = 6 * randfm11();
+  double random = 6 * rand01();
   for (int i = 1; i < 7; i++) {
     if (random < i) {
       return i;
@@ -61,7 +61,7 @@ float expo(float lambda) { return -std::log(1 - loi_uniforme(0, 1)) / lambda; }
 // }
 
 int deX(int nombre_de_faces) {
-  double random = nombre_de_faces * randfm11();
+  double random = nombre_de_faces * rand01();
   for (int i = 1; i < nombre_de_faces + 1; i++) {
     if (random < i) {
       return i;
@@ -88,16 +88,105 @@ int deX(int nombre_de_faces) {
 // }
 
 float loi_uniforme(float borne_bas, float borne_haut) {
-  float random = (randfm11() + 1) / 2;
+  float random = rand01();
   random = random * (borne_haut - borne_bas) + borne_bas;
   return random;
 }
 
-int main() {
-  for (int i = 0; i < 10; i++) {
-    std::cout << randfm11() << std::endl;
-    std::cout << loi_uniforme(0, 1) << std::endl;
-    std::cout << expo(1) << std::endl;
+// test exp
+
+// int main() {
+//   int tab[200];
+//   float i = 0.f;
+//   for (int j = 0; j < 200; j++)
+//     tab[j] = 0;
+//   for (int k = 0; k < 1000; k++) {
+//     float exemple = expo(1);
+//     i = 0;
+//     while (exemple > i / 10.f)
+//       i++;
+//     tab[int(i)]++;
+//   }
+//   for (int j = 0; j < 100; j++)
+//     std::cout << tab[j] << std::endl;
+//   return 0;
+// }
+
+float CLT(int precision) // return a random number from a standard normal
+                         // distribution following the Central limit theorem
+{
+  float somme = 0;
+  for (int i = 0; i < precision; i++)
+    somme += rand01();
+  return somme / float(precision);
+  // return (somme / float(n)) * sqrt(12.f * float(n)); // moyenne - esperance
+  // (0) divisé par écart type
+  //  (écart type de loi uniforme / sqrt(n))
+}
+
+glm::vec2
+CLT2D(int precision) // returns a random vector ; first it generates a random
+                     // number from a standard normal distribution following the
+                     // Central limit theorem,used as the y in a (x,y) vec2
+                     // rotated with a random (uniform) angle
+{
+  float randomf = CLT(precision);
+  float beta = M_PI * rand01();
+  glm::vec2 random(-glm::sin(beta) * randomf, cos(beta) * randomf);
+  return random;
+}
+
+int assign_DND_alignement(int biome) {
+  // on va définir le biome aléatoirement seloin une grille de 9 cases et à
+  // l'aide d'une distribution normale centrée sur l'une de ces cases
+
+  // on définie sur quelle case est centrée la distribution, le tableau
+  // imaginaire va de 1,1 à -1,-1 comme l'écran opengl
+  if (biome == 1)
+    glm::vec2 centre(0.0f, -0.5f);                // foret rouge
+  elif (biome == 2) glm::vec2 centre(0.5f, 0.0f); // royaume champignon
+  else glm::vec2 centre(-0.5f, 0.5f);             // océan sauvage
+  glm::vec2 position = centre + CLT2D(50);
+
+  // déterminer l'alignement en fonction de la position sur la grille imaginaire, de haut en gauche à bas en droite, 
+  float x = position.x;
+  float y = position.y;
+  if (y > 0.333) {
+    if (x < -0.333)
+      return 1;
+    elif (x < 0.333) return 2;
+    else return 3;
   }
+  elif (y > -0.333) {
+    if (x < -0.333)
+      return 4;
+    elif (x < 0.333) return 5;
+    else return 6;
+  }
+  else {
+    if (x < -0.333)
+      return 7;
+    elif (x < 0.333) return 8;
+    else return 9;
+  }
+}
+
+// test CLT
+
+int main() {
+  int tab[200];
+  float i = 0.f;
+  int nb_cases = 40;
+  for (int j = 0; j < nb_cases + 1; j++)
+    tab[j] = 0;
+  for (int k = 0; k < 1000; k++) {
+    float exemple = CLT(50);
+    i = 0.f;
+    while (exemple > i / float(nb_cases))
+      i++;
+    tab[int(i)]++;
+  }
+  for (int j = 0; j < nb_cases + 1; j++)
+    std::cout << tab[j] << std::endl;
   return 0;
 }
