@@ -138,20 +138,33 @@ CLT2D(int precision) // returns a random vector ; first it generates a random
 
 // test CLT
 
-  // int main() {
-  //   int tab[200];
-  //   float i = 0.f;
-  //   int nb_cases = 40;
-  //   for (int j = 0; j < nb_cases + 1; j++)
-  //     tab[j] = 0;
-  //   for (int k = 0; k < 1000; k++) {
-  //     float exemple = CLT(50);
-  //     i = 0.f;
-  //     while (exemple > i / float(nb_cases))
-  //       i++;
-  //     tab[int(i)]++;
-  //   }
-  //   for (int j = 0; j < nb_cases + 1; j++)
-  //     std::cout << tab[j] << std::endl;
-  //   return 0;
-  // }
+// int main() {
+//   int tab[200];
+//   float i = 0.f;
+//   int nb_cases = 40;
+//   for (int j = 0; j < nb_cases + 1; j++)
+//     tab[j] = 0;
+//   for (int k = 0; k < 1000; k++) {
+//     float exemple = CLT(50);
+//     i = 0.f;
+//     while (exemple > i / float(nb_cases))
+//       i++;
+//     tab[int(i)]++;
+//   }
+//   for (int j = 0; j < nb_cases + 1; j++)
+//     std::cout << tab[j] << std::endl;
+//   return 0;
+// }
+
+int loi_geometrique_inverse(float p) {// compte le nombre de succès avant un échec
+  bool success = true;
+  int compteur = 0;
+  if (rand01() > p)
+    success = false;
+  while (success) {
+    if (rand01() > p)
+      success = false;
+    compteur++;
+  }
+  return compteur;
+}

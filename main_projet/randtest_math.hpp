@@ -28,5 +28,7 @@ float loi_uniforme(float borne_bas, float borne_haut);
 
 float CLT(int precision);
 
+int loi_geometrique_inverse(float p);
+    
 glm::vec2 CLT2D(int precision);
 
