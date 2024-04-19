@@ -1,6 +1,6 @@
+#include "math.hpp"
 
-
-void assign_biomes(std::vector<int> tableau_de_biomes{}) {
+void assign_biomes(std::vector<int> &tableau_de_biomes) {
   // on divise le jeu en des cubes imaginaires que l’on va explorer selon la
   // base : de gauche à droite et de bas en haut, puis de bas en haut(ligne,
   // colonne, hauteur) à chacune de ces cases on attribue un biome, la présence
@@ -22,7 +22,7 @@ void assign_biomes(std::vector<int> tableau_de_biomes{}) {
       for (int k = 0; k < nbcB; k++) // parcours les lignes
       {
         int compteur = k + j * nbcB + i * nbcB * nbcB;
-        if (compteur = 0)
+        if (compteur == 0)
           tableau_de_biomes[0] = deX(3) - 1; // renvoit 0 1 ou 2
         else {
           // le but c’est de sélectionner au hasard une case
@@ -39,7 +39,7 @@ void assign_biomes(std::vector<int> tableau_de_biomes{}) {
           // n y en a pas on regarde la case juste avant sur la
           // même ligne,s’il n’y en a pas on regarde la case sur
           // la ligne d’avant.
-          std::vector<int> selection{1, nbcB, nbcB * nbcB};
+          std::vector<int> selection{1, int(nbcB), int(nbcB * nbcB)};
           std::vector<int> selection_aleatoire{};
           int random = deX(3) - 1;
           selection_aleatoire.push_back(selection[random]);
@@ -55,7 +55,7 @@ void assign_biomes(std::vector<int> tableau_de_biomes{}) {
             if (k != 0)
               tableau_de_biomes.push_back(chaine_de_markov(
                   tableau_de_biomes[compteur - selection_aleatoire[0]]));
-            elif (selection_aleatoire[1] == nbcB) {
+            else if (selection_aleatoire[1] == nbcB) {
               if (j != 0)
                 tableau_de_biomes.push_back(chaine_de_markov(
                     tableau_de_biomes[compteur - selection_aleatoire[1]]));
@@ -63,16 +63,16 @@ void assign_biomes(std::vector<int> tableau_de_biomes{}) {
                 tableau_de_biomes.push_back(chaine_de_markov(
                     tableau_de_biomes[compteur - selection_aleatoire[2]]));
             }
-            elif (i != 0) tableau_de_biomes.push_back(chaine_de_markov(
+            else if (i != 0) tableau_de_biomes.push_back(chaine_de_markov(
                 tableau_de_biomes[compteur - selection_aleatoire[1]]));
             else tableau_de_biomes.push_back(chaine_de_markov(
                 tableau_de_biomes[compteur - selection_aleatoire[2]]));
           }
-          elif (selection_aleatoire[0] == nbcB) {
+          else if (selection_aleatoire[0] == nbcB) {
             if (j != 0)
               tableau_de_biomes.push_back(chaine_de_markov(
                   tableau_de_biomes[compteur - selection_aleatoire[0]]));
-            elif (selection_aleatoire[1] == 1) {
+            else if (selection_aleatoire[1] == 1) {
               if (k != 0)
                 tableau_de_biomes.push_back(chaine_de_markov(
                     tableau_de_biomes[compteur - selection_aleatoire[1]]));
@@ -80,25 +80,26 @@ void assign_biomes(std::vector<int> tableau_de_biomes{}) {
                 tableau_de_biomes.push_back(chaine_de_markov(
                     tableau_de_biomes[compteur - selection_aleatoire[2]]));
             }
-            elif (i != 0) tableau_de_biomes.push_back(chaine_de_markov(
+            else if (i != 0) tableau_de_biomes.push_back(chaine_de_markov(
                 tableau_de_biomes[compteur - selection_aleatoire[1]]));
             else tableau_de_biomes.push_back(chaine_de_markov(
                 tableau_de_biomes[compteur - selection_aleatoire[2]]));
           }
-          elif (i != 0) tableau_de_biomes.push_back(chaine_de_markov(
+          else if (i != 0) tableau_de_biomes.push_back(chaine_de_markov(
               tableau_de_biomes[compteur - selection_aleatoire[0]]));
-          elif (selection_aleatoire[1] == 1) {
+          else if (selection_aleatoire[1] == 1) {
             if (k != 0)
               tableau_de_biomes.push_back(chaine_de_markov(
                   tableau_de_biomes[compteur - selection_aleatoire[1]]));
             else
               tableau_de_biomes.push_back(chaine_de_markov(
                   tableau_de_biomes[compteur - selection_aleatoire[2]]));
-            elif (j != 0) tableau_de_biomes.push_back(chaine_de_markov(
+            }
+          else if (j != 0) tableau_de_biomes.push_back(chaine_de_markov(
                 tableau_de_biomes[compteur - selection_aleatoire[1]]));
-            else tableau_de_biomes.push_back(chaine_de_markov(
+          else tableau_de_biomes.push_back(chaine_de_markov(
                 tableau_de_biomes[compteur - selection_aleatoire[2]]));
-          }
+          
         }
       }
     }
@@ -110,37 +111,37 @@ int chaine_de_markov(int biome_actuel) {
     float nb_rand = loi_uniforme(0, 1);
     if (nb_rand < 0.1)
       return 3;
-    elif (nb_rand < 0.8) return 1;
+    else if (nb_rand < 0.8) return 1;
     else return 2;
   }
-  elif (biome_actuel == 2) {
-    nb_rand = loi_uniforme(0, 1);
+  else if (biome_actuel == 2) {
+    float nb_rand = loi_uniforme(0, 1);
     if (nb_rand < 0.1)
       return 3;
-    elif (nb_rand < 0.15) return 1;
+    else if (nb_rand < 0.15) return 1;
     else return 2;
   }
   else {
-    nb_rand = rand_01();
+    float nb_rand = rand01();
     if (nb_rand < 0.8)
       return 3;
-    elif (nb_rand < 0.9) return 1;
+    else if (nb_rand < 0.9) return 1;
     else return 2;
   }
 }
 
-float CLT() // return a random number from a standard normal distribution
-            // following the Central limit theorem
-{
-  float somme = 0;
-  int n = 100;
-  for (int i = 0; i < n; i++)
-    somme += rand01();
-  return somme / float(n);
-  // return (somme / float(n)) * sqrt(12.f * float(n)); // moyenne - esperance
-  // (0) divisé par écart type
-  //  (écart type de loi uniforme / sqrt(n))
-}
+// float CLT() // return a random number from a standard normal distribution
+//             // following the Central limit theorem
+// {
+//   float somme = 0;
+//   int n = 100;
+//   for (int i = 0; i < n; i++)
+//     somme += rand01();
+//   return somme / float(n);
+//   // return (somme / float(n)) * sqrt(12.f * float(n)); // moyenne - esperance
+//   // (0) divisé par écart type
+//   //  (écart type de loi uniforme / sqrt(n))
+// }
 
 // int main() {
 //   int tab[200];

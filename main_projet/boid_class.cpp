@@ -1,5 +1,4 @@
 #include "boid_class.hpp"
-#include "glm/fwd.hpp"
 
 struct Boid boids;
 

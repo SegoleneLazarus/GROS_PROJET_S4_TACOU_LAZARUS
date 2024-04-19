@@ -1,4 +1,12 @@
 #include "randtest_math.hpp"
+// #include <cmath>
+// #include <ctime>
+// #include <iostream>
+// #include <math.h>
+// #include <random>
+// #include <time.h>
+// #include "glm/fwd.hpp"
+// #include "glm/glm.hpp"
 
 double rand01() {
   thread_local std::default_random_engine gen{time(NULL)};
@@ -48,6 +56,12 @@ int de6_eq() {
   }
 }
 
+float loi_uniforme(float borne_bas, float borne_haut) {
+  float random = rand01();
+  random = random * (borne_haut - borne_bas) + borne_bas;
+  return random;
+}
+
 float expo(float lambda) { return -std::log(1 - loi_uniforme(0, 1)) / lambda; }
 
 // int de6_deseq()
@@ -87,11 +101,7 @@ int deX(int nombre_de_faces) {
 //
 // }
 
-float loi_uniforme(float borne_bas, float borne_haut) {
-  float random = rand01();
-  random = random * (borne_haut - borne_bas) + borne_bas;
-  return random;
-}
+
 
 // test exp
 
@@ -138,23 +148,23 @@ CLT2D(int precision) // returns a random vector ; first it generates a random
 
 // test CLT
 
-// int main() {
-//   int tab[200];
-//   float i = 0.f;
-//   int nb_cases = 40;
-//   for (int j = 0; j < nb_cases + 1; j++)
-//     tab[j] = 0;
-//   for (int k = 0; k < 1000; k++) {
-//     float exemple = CLT(50);
-//     i = 0.f;
-//     while (exemple > i / float(nb_cases))
-//       i++;
-//     tab[int(i)]++;
-//   }
-//   for (int j = 0; j < nb_cases + 1; j++)
-//     std::cout << tab[j] << std::endl;
-//   return 0;
-// }
+int main() {
+  int tab[200];
+  float i = 0.f;
+  int nb_cases = 40;
+  for (int j = 0; j < nb_cases + 1; j++)
+    tab[j] = 0;
+  for (int k = 0; k < 1000; k++) {
+    float exemple = CLT(50);
+    i = 0.f;
+    while (exemple > i / float(nb_cases))
+      i++;
+    tab[int(i)]++;
+  }
+  for (int j = 0; j < nb_cases + 1; j++)
+    std::cout << tab[j] << std::endl;
+  return 0;
+}
 
 int loi_geometrique_inverse(float p) {// compte le nombre de succès avant un échec
   bool success = true;

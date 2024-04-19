@@ -1,13 +1,14 @@
 #pragma once
-#include "glm/fwd.hpp"
-#include "glm/glm.hpp"
 #include "math.hpp"
+#include "randtest_math.hpp"
 #include "p6/p6.h"
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <random>
 #include <time.h>
+#include "glm/fwd.hpp"
+#include "glm/glm.hpp"
 
 glm::vec3 normalize_to_vit(glm::vec3 position, glm::vec3 vitesse); // 3D
 
@@ -30,8 +31,22 @@ public:
         vit(loi_uniforme(-0.01, 0.01), loi_uniforme(-0.01, 0.01),
             loi_uniforme(-0.01, 0.01)),
         separationRadius(sepRad), cohesionRadius(cohRad),
-        alignementRadius(aliRad){}, separationForce(1), cohesionForce(1),
-        alignementForce(1), DND_alignement(5);
+        alignementRadius(aliRad), separationForce(1), cohesionForce(1),
+        alignementForce(1), DND_alignement(5){}
+
+  // Boid(float sepRad = 0.1, float cohRad = 0.1, float aliRad = 0.3) // 3D
+  //     : separationRadius(sepRad), cohesionRadius(cohRad),
+  //       alignementRadius(aliRad), separationForce(1), cohesionForce(1),
+  //       alignementForce(1), DND_alignement(5), {
+  //             pos.x = loi_uniforme(-1, 1);
+  //             pos[1] = loi_uniforme(-1, 1);
+  //             pos[2] = loi_uniforme(-1, 1);
+
+  //             vit[0] = loi_uniforme(-0.01, 0.01);
+  //             vit[1] = loi_uniforme(-0.01, 0.01);
+  //             vit[2] = loi_uniforme(-0.01, 0.01);
+    
+  //       }
 
   void limites() { // 3D
     if (abs(pos.x) >= 1)
@@ -42,8 +57,7 @@ public:
       pos.z = -pos.z / abs(pos.z);
   }
 
-  void alignement(const std::vector<Boid> &boids_tab,
-                  float alignementForce) { // 3D
+  void alignement(const std::vector<Boid> &boids_tab) { // 3D
     glm::vec3 somme_vit(0.0f, 0.0f, 0.0f);
     float nb_Bproches = 0;
 
@@ -108,7 +122,7 @@ public:
 
   int find_biome(
       std::vector<int>
-          tableau_de_biomes{}) // on va réutiliser la manière dont on a généré
+          &tableau_de_biomes) // on va réutiliser la manière dont on a généré
                                // les biomes pour retrouver le biome en fonction
                                // de la position du boid :DDDDDDDDDDDDD sounds
                                // fun ; hehe do u remember how we coded the
@@ -131,20 +145,31 @@ public:
     return tableau_de_biomes[k + j * nbcB + i * nbcB * nbcB];
   } // simple ^^
 
-  void assign_DND_alignement(std::vector<int> tableau_de_biomes{}) {
+  void assign_DND_alignement(std::vector<int> &tableau_de_biomes) {
     // on va définir le biome aléatoirement seloin une grille de 9 cases et à
     // l'aide d'une distribution normale centrée sur l'une de ces cases
 
     // tout d'abord trouver le biome
 
-    int biome = this->find_biome(std::vector<int> tableau_de_biomes{});
+    int biome = this->find_biome(tableau_de_biomes);
+    glm::vec2 centre(0.0f, 0.0f);
 
     // on définie sur quelle case est centrée la distribution, le tableau
     // imaginaire va de 1,1 à -1,-1 comme l'écran opengl
-    if (biome == 1)
-      glm::vec2 centre(0.0f, -0.5f);                // foret rouge
-    elif (biome == 2) glm::vec2 centre(0.5f, 0.0f); // royaume champignon
-    else glm::vec2 centre(-0.5f, 0.5f);             // océan sauvage
+
+    //TO DO mauvais pos pour les résultats
+    if (biome == 1) {
+      centre.x = 0.0f;
+      centre.y=-0.5;
+    } // foret rouge
+    else if (biome == 2) {
+      centre.x = 0.0f;
+      centre.y=-0.5;
+    } // royaume champignon
+    else {
+      centre.x = 0.0f;
+      centre.y=-0.5;
+    }           // océan sauvage
     glm::vec2 position = centre + CLT2D(50);
 
     // déterminer l'alignement en fonction de la position sur la grille
@@ -154,27 +179,26 @@ public:
     if (y > 0.333) {
       if (x < -0.333)
         DND_alignement = 1;
-      elif (x < 0.333) DND_alignement = 2;
+      else if (x < 0.333) DND_alignement = 2;
       else DND_alignement = 3;
     }
-    elif (y > -0.333) {
+    else if (y > -0.333) {
       if (x < -0.333)
         DND_alignement = 4;
-      elif (x < 0.333) DND_alignement = 5;
+      else if (x < 0.333) DND_alignement = 5;
       else DND_alignement = 6;
     }
     else {
       if (x < -0.333)
         DND_alignement = 7;
-      elif (x < 0.333) DND_alignement = 8;
+      else if (x < 0.333) DND_alignement = 8;
       else DND_alignement = 9;
     }
   }
 
   void
-  apply_DND_alignment(const std::vector<Boid> &
-                          boids_tab) { // ton one boid, à mettre dans une boucle
-    float multiplicateur 2;
+  apply_DND_alignment() { // ton one boid, à mettre dans une boucle
+    float multiplicateur = 2;
     float diviseur = 1 / multiplicateur;
     if (DND_alignement == 1) {
       cohesionForce *= multiplicateur;
@@ -183,50 +207,48 @@ public:
       alignementForce *= multiplicateur;
       separationForce *= diviseur;
     }
-    elif (DND_alignement == 2) {
+    else if (DND_alignement == 2) {
       cohesionForce *= multiplicateur;
       vit *= diviseur;
     }
-    elif (DND_alignement == 3) {
+    else if (DND_alignement == 3) {
       cohesionForce *= multiplicateur;
       vit *= diviseur;
 
       alignementForce *= diviseur;
       cohesionForce *= diviseur;
     }
-    elif (DND_alignement == 4) {
+    else if (DND_alignement == 4) {
 
       alignementForce *= multiplicateur;
       separationForce *= diviseur;
     }
-    elif (DND_alignement == 5) {}
-    elif (DND_alignement == 6) {
+    else if (DND_alignement == 5) {}
+    else if (DND_alignement == 6) {
       alignementForce *= diviseur;
       cohesionForce *= diviseur;
     }
-    elif (DND_alignement == 7) {
+    else if (DND_alignement == 7) {
       separationForce *= multiplicateur;
-      vitesse *= multiplicateur;
+      vit *= multiplicateur;
 
       alignementForce *= multiplicateur;
       separationForce *= diviseur;
     }
-    elif (DND_alignement == 8) {
+    else if (DND_alignement == 8) {
       separationForce *= multiplicateur;
-      vitesse *= multiplicateur;
+      vit *= multiplicateur;
     }
     else {
       separationForce *= multiplicateur;
-      vitesse *= multiplicateur;
+      vit *= multiplicateur;
 
       alignementForce *= diviseur;
       cohesionForce *= diviseur;
     }
   }
 
-  void spawn_boids_repartition_exp( // 3D
-      const std::vector<Boid>
-          &boids_tab) { // objectif : donner une répartition du spawn des boids
+  void spawn_boids_repartition_exp() { // objectif : donner une répartition du spawn des boids
                         // suivant une probabilité exponentielle qui fait
                         // apparaitre principalement vers les extrémités du
                         // cube, le spawn étant centré
@@ -239,7 +261,7 @@ public:
     float norme =
         (4 - expo(1)) *
         0.25; // en gros 1-expo/4 pour bien avoir  bc de boids vers l'extérieur
-    pos = normalize(.pos) *
+    pos = normalize(pos) *
           norme; // on a pas changé la direction, seulement la norme
   }
 

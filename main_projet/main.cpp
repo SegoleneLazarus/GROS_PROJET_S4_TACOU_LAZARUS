@@ -12,7 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/trigonometric.hpp>
 
-const float pi = glm::radians(180.0f);
+//const float pi = glm::radians(180.0f);
 
 void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids) {
   for (int i = 0; i < nombre_boids; i++) {
@@ -74,10 +74,6 @@ int main() {
   // initialize boids_tab
   std::vector<Boid> boids_tab;
   pushb_boids(boids_tab, 40);
-
-  float alignement_force = 0.5;
-  float separation_force = 0.5;
-  float cohesion_force = 0.5;
 
   TrackballCamera camera;
   ctx.mouse_moved = [&](p6::MouseMove event) {
@@ -286,8 +282,7 @@ int main() {
 
     for (auto &boidy : boids_tab) {
       boidy.draw_boid(ctx);
-      boidy.deplacement_boids(boids_tab, cohesion_force, separation_force,
-                              alignement_force);
+      boidy.deplacement_boids(boids_tab);
     }
   };
 
