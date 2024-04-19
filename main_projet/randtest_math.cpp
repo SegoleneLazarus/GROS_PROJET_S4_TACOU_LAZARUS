@@ -1,4 +1,7 @@
 #include "randtest_math.hpp"
+#include <chrono>
+#include <random>
+
 // #include <cmath>
 // #include <ctime>
 // #include <iostream>
@@ -9,7 +12,18 @@
 // #include "glm/glm.hpp"
 
 double rand01() {
-  thread_local std::default_random_engine gen{time(NULL)};
+  // Utiliser std::chrono::system_clock pour obtenir le temps actuel
+  auto now = std::chrono::system_clock::now();
+
+  // Convertir le temps actuel en un type compatible avec le générateur
+  auto now_since_epoch = now.time_since_epoch();
+  auto now_sec =
+      std::chrono::duration_cast<std::chrono::seconds>(now_since_epoch);
+  unsigned int seed = now_sec.count();
+
+  // Initialiser le générateur avec le seed obtenu
+  thread_local std::default_random_engine gen{seed};
+  // thread_local std::default_random_engine gen{time(NULL)};
   thread_local auto distrib = std::uniform_real_distribution<double>{0.0, 1.0};
 
   return distrib(gen);
@@ -101,8 +115,6 @@ int deX(int nombre_de_faces) {
 //
 // }
 
-
-
 // test exp
 
 // int main() {
@@ -148,25 +160,26 @@ CLT2D(int precision) // returns a random vector ; first it generates a random
 
 // test CLT
 
-int main() {
-  int tab[200];
-  float i = 0.f;
-  int nb_cases = 40;
-  for (int j = 0; j < nb_cases + 1; j++)
-    tab[j] = 0;
-  for (int k = 0; k < 1000; k++) {
-    float exemple = CLT(50);
-    i = 0.f;
-    while (exemple > i / float(nb_cases))
-      i++;
-    tab[int(i)]++;
-  }
-  for (int j = 0; j < nb_cases + 1; j++)
-    std::cout << tab[j] << std::endl;
-  return 0;
-}
+// int main() {
+//   int tab[200];
+//   float i = 0.f;
+//   int nb_cases = 40;
+//   for (int j = 0; j < nb_cases + 1; j++)
+//     tab[j] = 0;
+//   for (int k = 0; k < 1000; k++) {
+//     float exemple = CLT(50);
+//     i = 0.f;
+//     while (exemple > i / float(nb_cases))
+//       i++;
+//     tab[int(i)]++;
+//   }
+//   for (int j = 0; j < nb_cases + 1; j++)
+//     std::cout << tab[j] << std::endl;
+//   return 0;
+// }
 
-int loi_geometrique_inverse(float p) {// compte le nombre de succès avant un échec
+int loi_geometrique_inverse(
+    float p) { // compte le nombre de succès avant un échec
   bool success = true;
   int compteur = 0;
   if (rand01() > p)

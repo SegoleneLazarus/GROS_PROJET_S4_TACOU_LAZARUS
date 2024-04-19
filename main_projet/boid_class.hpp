@@ -57,7 +57,7 @@ public:
       pos.z = -pos.z / abs(pos.z);
   }
 
-  void alignement(const std::vector<Boid> &boids_tab) { // 3D
+  void alignement(const std::vector<Boid> &boids_tab) { // 3D//TODO le fix de mattéo
     glm::vec3 somme_vit(0.0f, 0.0f, 0.0f);
     float nb_Bproches = 0;
 
