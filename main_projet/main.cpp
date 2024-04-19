@@ -11,8 +11,12 @@
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/trigonometric.hpp>
+#include "app.hpp"
 
 //const float pi = glm::radians(180.0f);
+
+struct Vertex2DColor{glm::vec2 position;
+                    glm::vec3 color;};
 
 void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids) {
   for (int i = 0; i < nombre_boids; i++) {
@@ -70,6 +74,7 @@ struct MoonProgram {
 int main() {
   auto ctx = p6::Context{{1280, 720, "TP3 EX1"}};
   ctx.maximize_window();
+
 
   // initialize boids_tab
   std::vector<Boid> boids_tab;
@@ -132,6 +137,7 @@ int main() {
   glEnableVertexAttribArray(vertex_attr_normal);
   static constexpr GLuint vertex_attr_texcoords = 2;
   glEnableVertexAttribArray(vertex_attr_texcoords);
+  
 
   // Spécification des attributs de vertex
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
