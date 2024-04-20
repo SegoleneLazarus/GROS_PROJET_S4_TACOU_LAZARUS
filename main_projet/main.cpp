@@ -11,7 +11,6 @@
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/trigonometric.hpp>
-#include "app.hpp"
 
 //const float pi = glm::radians(180.0f);
 

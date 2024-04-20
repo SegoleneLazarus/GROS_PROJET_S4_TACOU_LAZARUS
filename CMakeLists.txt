@@ -2,18 +2,25 @@
 cmake_minimum_required(VERSION 3.20)
 
 # ---Choose project name---
-project(OpenGL-TPs-Template)
+project(GROS_PROJET_S4_TACOU_LAZARUS)
 
 # ---Add p6 library---
-include(FetchContent)
-set(P6_RAW_OPENGL_MODE ON CACHE BOOL "")
-FetchContent_Declare(
-    p6
-    GIT_REPOSITORY https://github.com/julesfouchy/p6
-    GIT_TAG 350bf29ec49f43c8600c7e0dbc6099091367c752
-)
-FetchContent_MakeAvailable(p6)
+# include(FetchContent)
+# set(P6_RAW_OPENGL_MODE ON CACHE BOOL "")
+# FetchContent_Declare(
+#     p6
+#     GIT_REPOSITORY https://github.com/julesfouchy/p6
+#     GIT_TAG 350bf29ec49f43c8600c7e0dbc6099091367c752
+# )
+# FetchContent_MakeAvailable(p6)
 
+# ---Add p6 library---
+# add_subdirectory(lib/p6)
+# target_link_libraries(${PROJECT_NAME} PRIVATE  p6::p6)
+
+# ---Add tinyobj library---
+add_subdirectory(lib/tinyobjloader)
+target_link_libraries(${PROJECT_NAME} PRIVATE tinyobjloader)
 
 # ---Create a target for each exercise---
 function(add_exercise EXERCISE_NAME)
