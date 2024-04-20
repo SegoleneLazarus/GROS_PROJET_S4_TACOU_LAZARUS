@@ -1,7 +1,7 @@
 #pragma once
 #include "math.hpp"
 #include "randtest_math.hpp"
-#include "p6/p6.h"
+#include "../lib/p6/include/p6/p6.h"
 #include <cmath>
 #include <cstdlib>
 #include <iostream>

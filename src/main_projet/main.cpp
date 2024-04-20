@@ -4,7 +4,7 @@
 #include "boid_class.hpp"
 #include "glm/fwd.hpp"
 #include "math.hpp"
-#include "p6/p6.h"
+#include "../lib/p6/include/p6/p6.h"
 #include <cmath>
 #include <cstdint>
 #include <glm/glm.hpp>
