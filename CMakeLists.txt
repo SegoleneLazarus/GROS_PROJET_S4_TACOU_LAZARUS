@@ -47,5 +47,8 @@ function(add_exercise EXERCISE_NAME)
     Cool__target_copy_folder(${TARGET_NAME} ${EXERCISE_NAME}/shaders shaders)
 endfunction(add_exercise)
 
+# ---Add tinyobj library---
+add_subdirectory(lib/tinyobjloader)
+
 
 add_exercise(main_projet)
