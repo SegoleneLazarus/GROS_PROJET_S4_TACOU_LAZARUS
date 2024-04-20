@@ -1,28 +1,28 @@
-#include "Object3D.hpp"
+#include "Objet3D.hpp"
 
-Object3D::Object3D(const std::string& nom, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
-    : _model(nom), _texture(nom), _shader(vertexShaderPath, fragmentShaderPath)
+Objet3D::Objet3D(const std::string& nom, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+    : modele(nom), texture(nom), shader(vertexShaderPath, fragmentShaderPath)
 {
     defineVBO();
     defineVAO();
 };
 
 // Sets up the vertex buffer object (VBO)
-void Object3D::defineVBO()
+void Objet3D::defineVBO()
 {
-    glGenBuffers(1, &_vbo);              // Generate one buffer
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo); // Bind the buffer as an array buffer
+    glGenBuffers(1, &vbo);              // Generate one buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); // Bind the buffer as an array buffer
 
     // Load vertex data into buffer
-    glBufferData(GL_ARRAY_BUFFER, _model.getVertices().size() * sizeof(glimac::ShapeVertex), _model.getVertices().data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, modele.getVertices().size() * sizeof(glimac::ShapeVertex), modele.getVertices().data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind the buffer
 }
 
-void Object3D::defineVAO()
+void Objet3D::defineVAO()
 {
-    glGenVertexArrays(1, &_vao); // Generate one vertex array
-    glBindVertexArray(_vao);     // Bind the vertex array
+    glGenVertexArrays(1, &vao); // Generate one vertex array
+    glBindVertexArray(vao);     // Bind the vertex array
 
     // Define attribute pointers
     static constexpr GLuint vertex_attr_position  = 0;
@@ -32,7 +32,7 @@ void Object3D::defineVAO()
     glEnableVertexAttribArray(vertex_attr_normal);
     glEnableVertexAttribArray(vertex_attr_texcoords);
 
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(vertex_attr_position, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, position));
     glVertexAttribPointer(vertex_attr_normal, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, normal));
     glVertexAttribPointer(vertex_attr_texcoords, 2, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
@@ -42,8 +42,8 @@ void Object3D::defineVAO()
 }
 
 // Cleans up OpenGL objects
-void Object3D::clear()
+void Objet3D::clear()
 {
-    glDeleteBuffers(1, &_vbo);      // Delete the vertex buffer
-    glDeleteVertexArrays(1, &_vao); // Delete the vertex array
+    glDeleteBuffers(1, &vbo);      // Delete the vertex buffer
+    glDeleteVertexArrays(1, &vao); // Delete the vertex array
 }

@@ -1,4 +1,4 @@
-#include "Texture.hpp"
+#include "textures.hpp"
 
 Texture::Texture(const std::string& name)
     : _filePath("assets/textures/" + name + ".png")

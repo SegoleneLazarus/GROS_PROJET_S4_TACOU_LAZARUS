@@ -4,11 +4,10 @@
 #include "tiny_obj_loader.h"
 #include "../src-common/glimac/common.hpp"
 
-// Represents a 3D model
 class Modele {
 private:
-    std::vector<glimac::ShapeVertex> _vertices; // Vertices of the model
-    std::string                      _filePath; // Path to the OBJ file
+    std::vector<glimac::ShapeVertex> vertices; // Vertices of the model
+    std::string                      chemin; // Path to the OBJ file
 
     // Loads model data from file
     bool chargeModele();
@@ -18,5 +17,5 @@ public:
     explicit Modele(const std::string& name);
 
     // Getter for vertices that returns a constant reference to avoid copying
-    const std::vector<glimac::ShapeVertex>& getVertices() const { return _vertices; }
+    const std::vector<glimac::ShapeVertex>& getVertices() const { return vertices; }
 };

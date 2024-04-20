@@ -1,7 +1,7 @@
 #include "model3D.hpp"
 
 Modele::Modele(const std::string& nomDuFichier) 
-    : _filePath("ressources/modeles/" + nomDuFichier + ".obj")
+    : chemin("ressources/modeles/" + nomDuFichier + ".obj")
 {
     if (!chargeModele()) // Vérifie le chargement du modèle 3D
     {
@@ -19,7 +19,7 @@ bool Modele::chargeModele()
     std::string                      avertissement;
 
     // Charge le fichier objet
-    const bool chargementReussi = tinyobj::LoadObj(&attributs, &formes, &materiaux, &avertissement, &erreur, _filePath.c_str());
+    const bool chargementReussi = tinyobj::LoadObj(&attributs, &formes, &materiaux, &avertissement, &erreur, chemin.c_str());
     if (!chargementReussi)
     {
         std::cerr << "LoadObj() a échoué : " << erreur << std::endl;
@@ -49,7 +49,7 @@ bool Modele::chargeModele()
             );
 
             // Construit un sommet et l'ajoute à la liste des sommets
-            _sommets.emplace_back(position, normale, coordTexture);
+            vertices.emplace_back(position, normale, coordTexture);
         }
     }
 
