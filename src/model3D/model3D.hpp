@@ -6,16 +6,13 @@
 
 class Modele {
 private:
-    std::vector<glimac::ShapeVertex> vertices; // Vertices of the model
-    std::string                      chemin; // Path to the OBJ file
+    std::vector<glimac::ShapeVertex> vertices;
+    std::string                      chemin;
 
-    // Loads model data from file
     bool chargeModele();
 
 public:
-    // Constructor that initializes a model with the name of the OBJ file
     explicit Modele(const std::string& name);
-
-    // Getter for vertices that returns a constant reference to avoid copying
+    
     const std::vector<glimac::ShapeVertex>& getVertices() const { return vertices; }
 };

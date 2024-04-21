@@ -4,7 +4,7 @@
 #include "../textures/textures.hpp"
 #include "p6/p6.h"
 
-// Manages a 3D object including its model, texture, shader, and OpenGL buffer objects
+// comment gérer un objet 3D bienvenue dans mon podcast
 class Objet3D {
 private:
     Modele   modele;
