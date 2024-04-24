@@ -1,6 +1,4 @@
 #pragma once
-// #include "Shapes/Common.hpp"
-// #include "Shapes/Common.hpp"
 #include "../lib/p6/include/p6/p6.h"
 #include "tiny_obj_loader.h"
 #include "../src-common/glimac/common.hpp"
@@ -15,7 +13,9 @@ private:
 public:
     explicit Modele(const std::string& name);
     
-    const std::vector<glimac::ShapeVertex>& getVertices() const { return vertices; }
+    const std::vector<glimac::ShapeVertex>& getVertices() const { 
+        return vertices; 
+    }
 };
 
 // #pragma once
