@@ -11,3 +11,7 @@ glm::vec3 normalize_to_vit(glm::vec3 position,
   position = normalize(position) * length_vit;
   return position;
 }
+
+Boid implementation_boids() {
+  
+    }

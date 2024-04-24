@@ -1,16 +1,19 @@
 #pragma once
+#include "../lib/p6/include/p6/p6.h"
+#include "glm/fwd.hpp"
+#include "glm/glm.hpp"
 #include "math.hpp"
 #include "randtest_math.hpp"
-#include "../lib/p6/include/p6/p6.h"
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <random>
 #include <time.h>
-#include "glm/fwd.hpp"
-#include "glm/glm.hpp"
+
 
 glm::vec3 normalize_to_vit(glm::vec3 position, glm::vec3 vitesse); // 3D
+
+Boid implementation_boids();
 
 struct Boid {
 private:
@@ -32,7 +35,7 @@ public:
             loi_uniforme(-0.01, 0.01)),
         separationRadius(sepRad), cohesionRadius(cohRad),
         alignementRadius(aliRad), separationForce(1), cohesionForce(1),
-        alignementForce(1), DND_alignement(5){}
+        alignementForce(1), DND_alignement(5) {}
 
   // Boid(float sepRad = 0.1, float cohRad = 0.1, float aliRad = 0.3) // 3D
   //     : separationRadius(sepRad), cohesionRadius(cohRad),
@@ -45,7 +48,7 @@ public:
   //             vit[0] = loi_uniforme(-0.01, 0.01);
   //             vit[1] = loi_uniforme(-0.01, 0.01);
   //             vit[2] = loi_uniforme(-0.01, 0.01);
-    
+
   //       }
 
   void limites() { // 3D
@@ -57,7 +60,8 @@ public:
       pos.z = -pos.z / abs(pos.z);
   }
 
-  void alignement(const std::vector<Boid> &boids_tab) { // 3D//TODO le fix de mattéo
+  void
+  alignement(const std::vector<Boid> &boids_tab) { // 3D//TODO le fix de mattéo
     glm::vec3 somme_vit(0.0f, 0.0f, 0.0f);
     float nb_Bproches = 0;
 
@@ -123,12 +127,12 @@ public:
   int find_biome(
       std::vector<int>
           &tableau_de_biomes) // on va réutiliser la manière dont on a généré
-                               // les biomes pour retrouver le biome en fonction
-                               // de la position du boid :DDDDDDDDDDDDD sounds
-                               // fun ; hehe do u remember how we coded the
-                               // biomes generation ??? With a tab... more
-                               // precisely a vector; like a vec1 ... :D ....
-                               // FOR A 3 DIMENTIONAL TABLE!!!!!!!!!
+                              // les biomes pour retrouver le biome en fonction
+                              // de la position du boid :DDDDDDDDDDDDD sounds
+                              // fun ; hehe do u remember how we coded the
+                              // biomes generation ??? With a tab... more
+                              // precisely a vector; like a vec1 ... :D ....
+                              // FOR A 3 DIMENTIONAL TABLE!!!!!!!!!
   {
     // k c'est les lignes x, j les colonnes y, i la hauteur z
     int k = 0;
@@ -157,19 +161,19 @@ public:
     // on définie sur quelle case est centrée la distribution, le tableau
     // imaginaire va de 1,1 à -1,-1 comme l'écran opengl
 
-    //TO DO mauvais pos pour les résultats
+    // TO DO mauvais pos pour les résultats
     if (biome == 1) {
       centre.x = 0.0f;
-      centre.y=-0.5;
+      centre.y = -0.5;
     } // foret rouge
     else if (biome == 2) {
       centre.x = 0.0f;
-      centre.y=-0.5;
+      centre.y = -0.5;
     } // royaume champignon
     else {
       centre.x = 0.0f;
-      centre.y=-0.5;
-    }           // océan sauvage
+      centre.y = -0.5;
+    } // océan sauvage
     glm::vec2 position = centre + CLT2D(50);
 
     // déterminer l'alignement en fonction de la position sur la grille
@@ -179,25 +183,28 @@ public:
     if (y > 0.333) {
       if (x < -0.333)
         DND_alignement = 1;
-      else if (x < 0.333) DND_alignement = 2;
-      else DND_alignement = 3;
-    }
-    else if (y > -0.333) {
+      else if (x < 0.333)
+        DND_alignement = 2;
+      else
+        DND_alignement = 3;
+    } else if (y > -0.333) {
       if (x < -0.333)
         DND_alignement = 4;
-      else if (x < 0.333) DND_alignement = 5;
-      else DND_alignement = 6;
-    }
-    else {
+      else if (x < 0.333)
+        DND_alignement = 5;
+      else
+        DND_alignement = 6;
+    } else {
       if (x < -0.333)
         DND_alignement = 7;
-      else if (x < 0.333) DND_alignement = 8;
-      else DND_alignement = 9;
+      else if (x < 0.333)
+        DND_alignement = 8;
+      else
+        DND_alignement = 9;
     }
   }
 
-  void
-  apply_DND_alignment() { // ton one boid, à mettre dans une boucle
+  void apply_DND_alignment() { // ton one boid, à mettre dans une boucle
     float multiplicateur = 2;
     float diviseur = 1 / multiplicateur;
     if (DND_alignement == 1) {
@@ -206,40 +213,33 @@ public:
 
       alignementForce *= multiplicateur;
       separationForce *= diviseur;
-    }
-    else if (DND_alignement == 2) {
+    } else if (DND_alignement == 2) {
       cohesionForce *= multiplicateur;
       vit *= diviseur;
-    }
-    else if (DND_alignement == 3) {
+    } else if (DND_alignement == 3) {
       cohesionForce *= multiplicateur;
       vit *= diviseur;
 
       alignementForce *= diviseur;
       cohesionForce *= diviseur;
-    }
-    else if (DND_alignement == 4) {
+    } else if (DND_alignement == 4) {
 
       alignementForce *= multiplicateur;
       separationForce *= diviseur;
-    }
-    else if (DND_alignement == 5) {}
-    else if (DND_alignement == 6) {
+    } else if (DND_alignement == 5) {
+    } else if (DND_alignement == 6) {
       alignementForce *= diviseur;
       cohesionForce *= diviseur;
-    }
-    else if (DND_alignement == 7) {
+    } else if (DND_alignement == 7) {
       separationForce *= multiplicateur;
       vit *= multiplicateur;
 
       alignementForce *= multiplicateur;
       separationForce *= diviseur;
-    }
-    else if (DND_alignement == 8) {
+    } else if (DND_alignement == 8) {
       separationForce *= multiplicateur;
       vit *= multiplicateur;
-    }
-    else {
+    } else {
       separationForce *= multiplicateur;
       vit *= multiplicateur;
 
@@ -248,10 +248,11 @@ public:
     }
   }
 
-  void spawn_boids_repartition_exp() { // objectif : donner une répartition du spawn des boids
-                        // suivant une probabilité exponentielle qui fait
-                        // apparaitre principalement vers les extrémités du
-                        // cube, le spawn étant centré
+  void spawn_boids_repartition_exp() { // objectif : donner une répartition du
+                                       // spawn des boids
+    // suivant une probabilité exponentielle qui fait
+    // apparaitre principalement vers les extrémités du
+    // cube, le spawn étant centré
     // cette fonction s'applique sur un seul boid, il faut la mettre dans une
     // boucle
 
@@ -264,8 +265,6 @@ public:
     pos = normalize(pos) *
           norme; // on a pas changé la direction, seulement la norme
   }
-
-  
 
   void draw_boid(p6::Context &ctx) { // 2D
     ctx.circle(p6::Center{pos}, p6::Radius{0.02f});
