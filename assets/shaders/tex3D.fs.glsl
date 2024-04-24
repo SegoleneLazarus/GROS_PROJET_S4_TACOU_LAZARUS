@@ -1,5 +1,3 @@
-
-
 #version 330
 
 struct PointLight {
@@ -54,18 +52,6 @@ vec3 pointLight(PointLight light, vec3 normal, vec3 fragPos) {
 }
 
 void main() {
-    vec3 normal = normalize(vNormal_vs);
-    vec3 light = blinnPhongDirectionalLight();
-
-    // Calculate and accumulate lighting from point lights
-    for (int i = 0; i < pointLights.length(); i++) {
-        light += pointLight(pointLights[i], normal, vPosition_vs);
-    }
-
-    // Apply texture
-    vec4 textureColor = texture(uTexture, vTexCoords);
-    fFragColor = vec4(light, 1.0) * textureColor;
-
-    // Apply transparency
-    fFragColor.a *= uTransparency;
+    vec4 texture1 = texture(uTexture, vTexCoords);
+    fFragColor = texture1;
 }

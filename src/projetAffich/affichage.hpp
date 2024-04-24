@@ -19,8 +19,8 @@ struct Scene {
   float taille = 20.f;
   float sol = 2.f;
   Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
-  Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
-  Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
   // Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
@@ -68,7 +68,7 @@ private:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f},
+    Transform transfEnviro{{5.f, 0.f, 5.f},
                            {0.f, 0.f, 0.f},
                            scene.taille / scene.baseCube};
     rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
@@ -93,8 +93,8 @@ private:
 
   void cleanUp() {
     scene.environnement.clear();
-    scene.spermatoïde.clear();
-    scene.ovocyte.clear();
+    // scene.spermatoïde.clear();
+    // scene.ovocyte.clear();
     scene.environnement.clear();
   }
 
