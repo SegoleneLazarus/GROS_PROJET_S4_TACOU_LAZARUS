@@ -18,7 +18,6 @@ struct Scene {
     Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
     // Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
     // Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
-    // Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
 
 };
 
@@ -58,7 +57,7 @@ private:
   void render() {
     rendu.clearAll();
 
-    // _ctx.background(p6::NamedColor::Yellow);
+    _ctx.background(p6::NamedColor::Yellow);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);

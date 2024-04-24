@@ -1,9 +1,12 @@
 #include "shader.hpp"
 
 Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
-    : shader{p6::load_shader("assets/shaders/" 
+    : ID(shader.id()),
+    shader{p6::load_shader("assets/shaders/" 
     + vertexShaderPath, "assets/shaders/" 
     + fragmentShaderPath)}, 
+    uVMatrix(glGetUniformLocation(ID, "uVMatrix")),
+    uMMatrix(glGetUniformLocation(ID, "uMMatrix")),
     uMVPMatrix(glGetUniformLocation(shader.id(), "uMVPMatrix")), 
     uMVMatrix(glGetUniformLocation(shader.id(), "uMVMatrix")), 
     uNormalMatrix(glGetUniformLocation(shader.id(), "uNormalMatrix")), 
