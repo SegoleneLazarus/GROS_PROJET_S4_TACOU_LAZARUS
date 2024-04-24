@@ -14,8 +14,8 @@ struct Scene {
     float    baseCube = 15.f;
     float    taille         = 20.f;
     float    sol  = 2.f;
-    Objet3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Objet3D environment{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    // Objet3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class ProjetAffich {
@@ -57,7 +57,7 @@ private:
 
     void cleanUp()
     {
-        scene.boundingCube.clear();
+        // scene.boundingCube.clear();
         // player.getObject3D().clear();
     }
 
@@ -92,4 +92,27 @@ public:
     {
         cleanUp();
     }
+};
+
+
+class GlobalRenderer {
+private:
+    static float     _uKd;             // [GUI]
+    static float     _uKs;             // [GUI]
+    static float     _uLightIntensity; // [GUI]
+    static float     _uShininess;      // [GUI]
+
+    std::vector<Objet3D> objets;
+    p6::Context*          _ctx;
+    TrackballCamera*      _camera;
+
+public:
+    explicit GlobalRenderer(p6::Context* ctx, TrackballCamera* camera);
+
+    void        drawObject(const glm::mat4& modelMatrix, const Objet3D& objet, float transparency = 1.f) const;
+    void        clearAll();
+    static void initializeGUI();
+    // void        addObject(Object3D& _objects);
+    // void        clearObjects();
+    // void        close();
 };
