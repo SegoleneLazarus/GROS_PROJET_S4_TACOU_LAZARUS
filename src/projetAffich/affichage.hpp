@@ -7,7 +7,6 @@
 #include "../objet3D/Objet3D.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
-#include "gui.hpp"
 #include "p6/p6.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
@@ -17,8 +16,8 @@ struct Scene {
     float    taille         = 20.f;
     float    sol  = 2.f;
     Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
+    // Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
+    // Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
     // Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
 
 };
@@ -49,7 +48,7 @@ private:
   // Player             _player;
   Scene scene;
 
-  void affichageGUI() { GUI::initializeGUI(); }
+  void affichageGUI() { GUI::initializeGUI(); };
 
   // void gameLogic()
   // {
@@ -78,15 +77,14 @@ private:
     // _player.getObject3D());
   }
 
-    }
+    };
 
     void cleanUp()
     {
         scene.environnement.clear();
-        scene.spermatoïde.clear();
-        scene.ovocyte.clear();
-        scene.environnement.clear();
-    }
+        // scene.spermatoïde.clear();
+        // scene.ovocyte.clear();
+    };
 
 public:
   explicit ProjetAffich()
@@ -110,7 +108,7 @@ public:
 
       // Boid boids_tab=implementation_boid();
 
-      //affichage boids(boids_tab) 
+      //affichage boids(boids_tab) ;
 
       render();
     };
