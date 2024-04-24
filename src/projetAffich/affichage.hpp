@@ -38,7 +38,7 @@ private:
 public:
   explicit Rendu(p6::Context *ctx, TrackballCamera *camera);
 
-  void dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet, float transparency) const;
+  void dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet) const;
   void clearAll();
 };
 
@@ -62,7 +62,7 @@ private:
   void render() {
     rendu.clearAll();
 
-    // _ctx.background(p6::NamedColor::Blue);
+    _ctx.background(p6::NamedColor::Yellow);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
