@@ -3,9 +3,10 @@
 #include "../../lib/p6/src/internal/Time/Clock_Realtime.h"
 #include "../GUI/gui.hpp"
 #include "../TrackBallCamera/TrackballCamera.hpp"
-#include "../model3D/model3D.hpp"
 #include "../joueur/joueur.hpp"
+#include "../model3D/model3D.hpp"
 #include "../objet3D/Objet3D.hpp"
+
 // #include "../controle/Controls.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
@@ -25,11 +26,11 @@ struct Scene {
 
 class Rendu {
 private:
-    static float     _uKd;             // [GUI]
-    static float     _uKs;             // [GUI]
-    static float     _uLightIntensity; // [GUI]
-    static float     _uShininess;      // [GUI]
-    static glm::vec3 lightDir;        // [GUI]
+  static float _uKd;             // [GUI]
+  static float _uKs;             // [GUI]
+  static float _uLightIntensity; // [GUI]
+  static float _uShininess;      // [GUI]
+  static glm::vec3 lightDir;     // [GUI]
 
   std::vector<Objet3D> objets;
   p6::Context *_ctx;
@@ -78,8 +79,10 @@ private:
     // 0.f, 0.f}, scene.taille / scene.baseCube};
     // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
 
-        // Transform transfOvocyte{joueur.getPosition(), {0.f, -joueur.getLastOrientation() +180, 0.f}, .3f};
-        // rendu.dessinObjet(transfOvocyte.getTransform(), joueur.getObjet3D(), joueur.getTransparency());
+    // Transform transfOvocyte{joueur.getPosition(), {0.f,
+    // -joueur.getLastOrientation() +180, 0.f}, .3f};
+    // rendu.dessinObjet(transfOvocyte.getTransform(), joueur.getObjet3D(),
+    // joueur.getTransparency());
 
     // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency *
     // _hoverTime); _player.animatePlayer(); Transform
@@ -116,7 +119,7 @@ public:
 
       implementation_boids(boids_tab);
 
-      // affichage boids(boids_tab)
+      // affichage_boids(boids_tab);
 
       render();
     };

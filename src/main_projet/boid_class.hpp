@@ -273,3 +273,5 @@ void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids);
 void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids);
 
 void implementation_boids(std::vector<Boid> &boids_tab);
+
+void affichage_boids(std::vector<Boid> &boids_tab);
