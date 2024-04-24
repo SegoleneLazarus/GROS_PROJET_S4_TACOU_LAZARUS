@@ -58,7 +58,7 @@ private:
   void render() {
     rendu.clearAll();
 
-    // _ctx.background(p6::NamedColor::Blue);
+    // _ctx.background(p6::NamedColor::Yellow);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -77,7 +77,6 @@ private:
     // _player.getObject3D());
   }
 
-    };
 
     void cleanUp()
     {
@@ -91,9 +90,9 @@ public:
       : rendu(&_ctx, &camera)
   // _player(&_ctx, &camera, &_scene.size),
   // camera(&_player.getPosition())
+    // camera()
   {
     _ctx.maximize_window();
-
     //     _player.handleControls();
   }
 

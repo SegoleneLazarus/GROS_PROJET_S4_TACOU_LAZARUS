@@ -43,3 +43,16 @@ void Objet3D::clear()
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
 }
+
+// NE SERT A RIEN
+// class GameObject {
+// protected: // Changed from private to protected for inheritance access
+//     Objet3D  objet3D;
+//     Transform transform;
+
+// public:
+//     GameObject(){};
+
+//     Object3D&  getObject3D() { return objet3D; };
+//     Transform& getTransform() { return transform; };
+// };
