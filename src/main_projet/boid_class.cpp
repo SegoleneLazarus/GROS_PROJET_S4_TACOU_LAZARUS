@@ -12,6 +12,24 @@ glm::vec3 normalize_to_vit(glm::vec3 position,
   return position;
 }
 
-// Boid implementation_boids() {
-  
-//     }
+void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids) {
+  for (int i = 0; i < nombre_boids; i++) {
+    Boid bdt{};
+    boids_tab.push_back(bdt);
+  }
+}
+
+void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids) {
+  if (nombre_boids > boids_tab.size()) {
+    pushb_boids(boids_tab, nombre_boids - boids_tab.size());
+  } else if (nombre_boids < boids_tab.size()) {
+    boids_tab.resize(nombre_boids);
+  }
+}
+
+void implementation_boids(std::vector<Boid> &boids_tab) {
+
+  for (auto &boidy : boids_tab) {
+    boidy.deplacement_boids(boids_tab);
+  }
+}

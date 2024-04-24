@@ -12,13 +12,13 @@
 #include <vector>
 
 struct Scene {
-    float    baseCube = 15.f;
-    float    taille         = 20.f;
-    float    sol  = 2.f;
-    Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    // Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
-    // Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
-
+  float baseCube = 15.f;
+  float taille = 20.f;
+  float sol = 2.f;
+  Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class Rendu {
@@ -47,7 +47,9 @@ private:
   // Player             _player;
   Scene scene;
 
-  void affichageGUI() { GUI::initializeGUI(); };
+  void affichageGUI(std::vector<Boid> &boids_tab) {
+    GUI::initializeGUI(boids_tab);
+  }
 
   // void gameLogic()
   // {
@@ -57,17 +59,21 @@ private:
   void render() {
     rendu.clearAll();
 
-    _ctx.background(p6::NamedColor::Yellow);
+    // _ctx.background(p6::NamedColor::Blue);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-        Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
-        rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
-        // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
-        // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
-        // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
-        // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+    Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f},
+                           {0.f, 0.f, 0.f},
+                           scene.taille / scene.baseCube};
+    rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+    // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f,
+    // 0.f, 0.f}, scene.taille / scene.baseCube};
+    // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+    // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f,
+    // 0.f, 0.f}, scene.taille / scene.baseCube};
+    // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
 
     // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency *
     // _hoverTime); _player.animatePlayer(); Transform
@@ -76,20 +82,18 @@ private:
     // _player.getObject3D());
   }
 
-
-    void cleanUp()
-    {
-        scene.environnement.clear();
-        // scene.spermatoïde.clear();
-        // scene.ovocyte.clear();
-    };
+  void cleanUp() {
+    scene.environnement.clear();
+    scene.spermatoïde.clear();
+    scene.ovocyte.clear();
+    scene.environnement.clear();
+  }
 
 public:
   explicit ProjetAffich()
       : rendu(&_ctx, &camera)
   // _player(&_ctx, &camera, &_scene.size),
   // camera(&_player.getPosition())
-    // camera()
   {
     _ctx.maximize_window();
     //     _player.handleControls();
@@ -97,16 +101,16 @@ public:
 
   ~ProjetAffich() { cleanUp(); }
 
-  void update() {
+  void update(std::vector<Boid> &boids_tab) {
     _ctx.update = [&]() {
       // game not so Logic();
-      //
+
       // Setup context GUI
-      GUI::initializeGUI();
+      GUI::initializeGUI(boids_tab);
 
-      // Boid boids_tab=implementation_boid();
+      implementation_boids(boids_tab);
 
-      //affichage boids(boids_tab) ;
+      // affichage boids(boids_tab)
 
       render();
     };

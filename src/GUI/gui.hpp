@@ -1,18 +1,15 @@
 #pragma once
-#include <imgui.h>
+#include "../main_projet/boid_class.hpp"
 #include "glm/fwd.hpp"
 
+#include <imgui.h>
 
+class GUI {
+private:
+  static float alignement_force;
+  static float separation_force;
+  static float cohesion_force;
 
-class GUI{
-    private:
-        static float     alignement_force;             
-        static float     separation_force;
-        static float     cohesion_force;   
-
-
-    public:
-
-        static void initializeGUI();
-
+public:
+  static void initializeGUI(std::vector<Boid> &boids_tab);
 };

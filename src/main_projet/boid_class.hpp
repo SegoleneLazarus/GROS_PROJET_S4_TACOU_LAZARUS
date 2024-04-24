@@ -10,10 +10,7 @@
 #include <random>
 #include <time.h>
 
-
 glm::vec3 normalize_to_vit(glm::vec3 position, glm::vec3 vitesse); // 3D
-
-// Boid implementation_boids();
 
 struct Boid {
 private:
@@ -270,3 +267,9 @@ public:
     ctx.circle(p6::Center{pos}, p6::Radius{0.02f});
   }
 };
+
+void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids);
+
+void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids);
+
+void implementation_boids(std::vector<Boid> &boids_tab);
