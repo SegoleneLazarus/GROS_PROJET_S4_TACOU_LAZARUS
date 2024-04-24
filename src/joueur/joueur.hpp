@@ -1,41 +1,38 @@
 #pragma once
 #include <vector>
 #include "../TrackBallCamera/TrackballCamera.hpp"
-// #include "Controls.hpp"
+// #include "../controle/Controls.hpp"
+#include "../GUI/gui.hpp"
 // #include "Maths/Math.hpp"
-#include "../objet3D//Objet3D.hpp"
+#include "../objet3D/Objet3D.hpp"
 #include "../src-common/glimac/common.hpp"
 #include "p6/p6.h"
-
 
 class Joueur {
 private:
     p6::Context*     _ctx;
     TrackballCamera* camera;
-    Objet3D         objet3D;
-    glm::vec3        position;
-    float            hoverAmplitude;
-    float            hoverFrequency;
-    float            hoverTime;
+    // Controls         controls;
+    glm::vec3        position{0.f, 0.f, 0.f};
+
+    Objet3D objet3D{"ovocyte", "3D.vs.glsl", "tex3D.fs.glsl"};
+
+    float _hoverAmplitude = 0.1f; // [GUI]
+    float _hoverFrequency = 2.0f; // [GUI]
+    float _hoverTime      = 0.0f;
+    float _transparency = 1.f; // [GUI]
 
 public:
-    // Constructor
-    Joueur(p6::Context* ctx, TrackballCamera* camera, Objet3D objet3D);
+    Joueur(p6::Context* ctx, TrackballCamera* camera, float* mapSize);
 
-    // Methods to handle Joueur actions and interactions
-    void handleControls();
-    void handleMovements();
-    void animateJoueur();
-    void initializeGUI();
+    // void handleControls();
+    // void handleMovements();
+    // void animatePlayer();
+    // void initializeGUI();
 
-    // Getter methods
-    inline Objet3D& getObjet3D() { return objet3D; }
-    inline glm::vec3& getPosition() { return position; }
-    // inline float getLastOrientation() const {
-    //     return glm::degrees(atan2(_controls.getLastDirection().z, _controls.getLastDirection().x)) + 90.0f;
-    // }
-    // inline float getTransparency() const { return _transparency; }
-
-    // Setter method
-    // inline void setPosition(const glm::vec3& position) { position = position; }
+    Objet3D&  getObjet3D() { return objet3D; };
+    glm::vec3& getPosition() { return position; };
+    // float      getLastOrientation() { return glm::degrees(atan2(controls.getLastDirection().z, controls.getLastDirection().x)) + 90.0f; };
+    float      getTransparency() const { return _transparency; };
+    void       setPosition(const glm::vec3& pos) { position = pos; };
 };

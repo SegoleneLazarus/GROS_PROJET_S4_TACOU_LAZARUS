@@ -3,6 +3,10 @@
 #include <cstdlib>
 
 #define DOCTEST_CONFIG_IMPLEMENT
+<<<<<<< HEAD
+=======
+#include "../projetAffich/affichage.hpp"
+>>>>>>> 4b654013182bb0bde9eea387eea204cc0932fc94
 #include "doctest/doctest.h"
 #include "p6/p6.h"
 #include "projetAffich/affichage.hpp"

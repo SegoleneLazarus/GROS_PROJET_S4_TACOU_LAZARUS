@@ -4,7 +4,9 @@
 #include "../GUI/gui.hpp"
 #include "../TrackBallCamera/TrackballCamera.hpp"
 #include "../model3D/model3D.hpp"
+#include "../joueur/joueur.hpp"
 #include "../objet3D/Objet3D.hpp"
+// #include "../controle/Controls.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
 #include "p6/p6.h"
@@ -23,6 +25,12 @@ struct Scene {
 
 class Rendu {
 private:
+    static float     _uKd;             // [GUI]
+    static float     _uKs;             // [GUI]
+    static float     _uLightIntensity; // [GUI]
+    static float     _uShininess;      // [GUI]
+    static glm::vec3 lightDir;        // [GUI]
+
   std::vector<Objet3D> objets;
   p6::Context *_ctx;
   TrackballCamera *camera;
@@ -30,12 +38,8 @@ private:
 public:
   explicit Rendu(p6::Context *ctx, TrackballCamera *camera);
 
-  void dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet) const;
+  void dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet, float transparency) const;
   void clearAll();
-  // static void initializeGUI();
-  void ajoutObj(Objet3D &objets);
-  void clearObjets();
-  void close();
 };
 
 class ProjetAffich {
@@ -43,8 +47,7 @@ private:
   p6::Context _ctx = p6::Context{{.title = "caca"}};
   Rendu rendu;
   TrackballCamera camera;
-
-  // Player             _player;
+  // Joueur  joueur;
   Scene scene;
 
   void affichageGUI(std::vector<Boid> &boids_tab) {
@@ -53,7 +56,7 @@ private:
 
   // void gameLogic()
   // {
-  //     _player.handleMovements();
+  //     joueur.handleMovements();
   // }
 
   void render() {
@@ -74,6 +77,9 @@ private:
     // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f,
     // 0.f, 0.f}, scene.taille / scene.baseCube};
     // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+
+        // Transform transfOvocyte{joueur.getPosition(), {0.f, -joueur.getLastOrientation() +180, 0.f}, .3f};
+        // rendu.dessinObjet(transfOvocyte.getTransform(), joueur.getObjet3D(), joueur.getTransparency());
 
     // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency *
     // _hoverTime); _player.animatePlayer(); Transform
