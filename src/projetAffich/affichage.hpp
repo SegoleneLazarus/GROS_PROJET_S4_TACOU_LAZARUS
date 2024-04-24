@@ -15,8 +15,11 @@ struct Scene {
     float    baseCube = 15.f;
     float    taille         = 20.f;
     float    sol  = 2.f;
-    // Objet3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
     Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
+    // Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
+
 };
 
 class Rendu {
@@ -66,6 +69,10 @@ private:
 
         Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
         rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+        // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
+        // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+        // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
+        // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
 
         // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency * _hoverTime);
         // _player.animatePlayer();
@@ -77,7 +84,9 @@ private:
     void cleanUp()
     {
         scene.environnement.clear();
-        // player.getObject3D().clear();
+        scene.spermatoïde.clear();
+        scene.ovocyte.clear();
+        scene.environnement.clear();
     }
 
 public:
