@@ -1,7 +1,7 @@
 #include "model3D.hpp"
 
 Modele::Modele(const std::string& nomDuFichier) 
-    : chemin("ressources/modeles/" + nomDuFichier + ".obj")
+    : chemin("assets/modeles/" + nomDuFichier + ".obj")
 {
     if (!chargeModele()) // Vérifie le chargement du modèle 3D
     {
