@@ -1,4 +1,4 @@
-#include "../src-common/TrackballCamera.hpp"
+#include "../TrackBallCamera/TrackballCamera.hpp"
 #include "../src-common/glimac/common.hpp"
 #include "../src-common/glimac/sphere_vertices.hpp"
 #include "boid_class.hpp"
@@ -52,23 +52,23 @@ struct EarthProgram {
   }
 };
 
-struct MoonProgram {
-  p6::Shader m_Program;
+// struct MoonProgram {
+//   p6::Shader m_Program;
 
-  GLint uMVPMatrix;
-  GLint uMVMatrix;
-  GLint uNormalMatrix;
-  GLint uTexture;
+//   GLint uMVPMatrix;
+//   GLint uMVMatrix;
+//   GLint uNormalMatrix;
+//   GLint uTexture;
 
-  MoonProgram()
-      : m_Program{
-            p6::load_shader("shaders/3D.vs.glsl", "shaders/tex3D.fs.glsl")} {
-    uMVPMatrix = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
-    uMVMatrix = glGetUniformLocation(m_Program.id(), "uMVMatrix");
-    uNormalMatrix = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
-    uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
-  }
-};
+//   MoonProgram()
+//       : m_Program{
+//             p6::load_shader("shaders/3D.vs.glsl", "shaders/tex3D.fs.glsl")} {
+//     uMVPMatrix = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
+//     uMVMatrix = glGetUniformLocation(m_Program.id(), "uMVMatrix");
+//     uNormalMatrix = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
+//     uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
+//   }
+// };
 
 int main() {
   auto ctx = p6::Context{{1280, 720, "TP3 EX1"}};
