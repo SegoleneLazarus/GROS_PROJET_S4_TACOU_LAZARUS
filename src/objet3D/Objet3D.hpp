@@ -2,6 +2,7 @@
 #include "../model3D/model3D.hpp"
 #include "../shaders/shader.hpp"
 #include "../textures/textures.hpp"
+#include "../src-common/glimac/common.hpp"
 #include "p6/p6.h"
 
 // comment gérer un objet 3D bienvenue dans mon podcast
@@ -15,7 +16,7 @@ private:
     GLuint vao{};
 
 public:
-    explicit Objet3D(const std::string& nom = "BoundingCube", const std::string& vertexShaderPath = "3D.vs.glsl", const std::string& fragmentShaderPath = "tex3D.fs.glsl");
+    explicit Objet3D(const std::string& nom = "cube", const std::string& vertexShaderPath = "3D.vs.glsl", const std::string& fragmentShaderPath = "tex3D.fs.glsl");
 
     void defineVBO();
     void defineVAO();

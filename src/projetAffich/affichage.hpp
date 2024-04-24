@@ -8,6 +8,7 @@
 #include "../transfObjet/transfObjet.hpp"
 #include "../GUI/gui.hpp"
 #include "glm/fwd.hpp"
+#include <glm/gtc/type_ptr.hpp>
 #include "p6/p6.h"
 
 struct Scene {
@@ -18,10 +19,28 @@ struct Scene {
     Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
+class Rendu {
+private:
+
+    std::vector<Objet3D> objets;
+    p6::Context*          _ctx;
+    TrackballCamera*      camera;
+
+public:
+    explicit Rendu(p6::Context* ctx, TrackballCamera* camera);
+
+    void        dessinObjet(const glm::mat4& modelMatrix, const Objet3D& objet) const;
+    void        clearAll();
+    // static void initializeGUI();
+    void        ajoutObj(Objet3D& objets);
+    void        clearObjets();
+    void        close();
+};
+
 class ProjetAffich {
 private:
     p6::Context     _ctx = p6::Context{{.title = "caca"}};
-    // GlobalRenderer  _renderer;
+    Rendu  rendu;
     TrackballCamera camera;
 
     // Player             _player;
@@ -38,15 +57,15 @@ private:
 
     void render()
     {
-        // _renderer.clearAll();
+        rendu.clearAll();
 
         // _ctx.background(p6::NamedColor::Blue);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
-        Transform boundingCubeTransform{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
-        // _renderer.drawObject(boundingCubeTransform.getTransform(), scene.boundingCube);
+        Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
+        rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
 
         // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency * _hoverTime);
         // _player.animatePlayer();
@@ -57,13 +76,15 @@ private:
 
     void cleanUp()
     {
-        // scene.boundingCube.clear();
+        scene.environnement.clear();
         // player.getObject3D().clear();
     }
 
 public:
     explicit ProjetAffich()
-    //     : _renderer(&_ctx, &_camera), _player(&_ctx, &camera, &_scene.size), camera(&_player.getPosition())
+        : rendu(&_ctx, &camera) 
+        // _player(&_ctx, &camera, &_scene.size), 
+        // camera(&_player.getPosition())
     {
         _ctx.maximize_window();
 
@@ -95,24 +116,3 @@ public:
 };
 
 
-class GlobalRenderer {
-private:
-    static float     _uKd;             // [GUI]
-    static float     _uKs;             // [GUI]
-    static float     _uLightIntensity; // [GUI]
-    static float     _uShininess;      // [GUI]
-
-    std::vector<Objet3D> objets;
-    p6::Context*          _ctx;
-    TrackballCamera*      _camera;
-
-public:
-    explicit GlobalRenderer(p6::Context* ctx, TrackballCamera* camera);
-
-    void        drawObject(const glm::mat4& modelMatrix, const Objet3D& objet, float transparency = 1.f) const;
-    void        clearAll();
-    static void initializeGUI();
-    // void        addObject(Object3D& _objects);
-    // void        clearObjects();
-    // void        close();
-};
