@@ -11,12 +11,12 @@ public:
     GLint uMVMatrix;
     GLint uNormalMatrix;
     GLint uTexture;
-    GLint uKd;
-    GLint uKs;
-    GLint uShininess;
-    GLint uLightDir_vs;
-    GLint uLightPos_vs;
-    GLint uLightIntensity;
+    // GLint uKd;
+    // GLint uKs;
+    // GLint uShininess;
+    // GLint uLightDir_vs;
+    // GLint uLightPos_vs;
+    // GLint uLightIntensity;
 
     // Constructor initializes shader with paths to vertex and fragment shader source files, default to basic shaders
     explicit Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);

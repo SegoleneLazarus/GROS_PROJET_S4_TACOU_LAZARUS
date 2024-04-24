@@ -1,7 +1,6 @@
 #pragma once
 #include <imgui.h>
 #include "glm/fwd.hpp"
-#include "../main_projet/boid_class.hpp"
 
 
 
