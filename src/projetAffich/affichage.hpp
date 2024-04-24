@@ -6,6 +6,7 @@
 #include "../model3D/model3D.hpp"
 #include "../objet3D/Objet3D.hpp"
 #include "../transfObjet/transfObjet.hpp"
+#include "../GUI/gui.hpp"
 #include "glm/fwd.hpp"
 #include "p6/p6.h"
 
@@ -25,6 +26,10 @@ private:
 
     // Player             _player;
     Scene              scene;
+
+    void affichageGUI(){
+        GUI::initializeGUI();
+    }
 
     // void gameLogic()
     // {
@@ -46,7 +51,7 @@ private:
         // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency * _hoverTime);
         // _player.animatePlayer();
         // Transform ghostTransform{_player.getPosition(), {0.f, -_player.getLastOrientation() + 180, 0.f}, .3f};
-        _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D());
+        // _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D());
 
     }
 
