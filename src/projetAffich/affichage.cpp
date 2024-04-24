@@ -64,6 +64,8 @@ void Rendu::dessinObjet(const glm::mat4& modelMatrix, const Objet3D& objet) cons
                      glm::value_ptr(viewMatrix * modelMatrix));
   glUniformMatrix4fv(objet.getShader().uMVPMatrix, 1, GL_FALSE,
                      glm::value_ptr(projMatrix * viewMatrix * modelMatrix));
+
+    glDrawArrays(GL_TRIANGLES, 0, objet.getMesh().size());
 };
 
 void Rendu::clearAll() {
