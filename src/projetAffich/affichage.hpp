@@ -62,13 +62,13 @@ private:
     }
 
 public:
-    // explicit ProjetAffich(unsigned int nb_boids)
+    explicit ProjetAffich()
     //     : _renderer(&_ctx, &_camera), _player(&_ctx, &camera, &_scene.size), camera(&_player.getPosition())
-    // {
-    //     _ctx.maximize_window();
+    {
+        _ctx.maximize_window();
 
     //     _player.handleControls();
-    // }
+    }
 
     ~ProjetAffich()
     {
@@ -78,7 +78,7 @@ public:
     void update()
     {
         _ctx.update = [&]() {
-            gameLogic();
+            // gameLogic();
             render();
         };
     }
