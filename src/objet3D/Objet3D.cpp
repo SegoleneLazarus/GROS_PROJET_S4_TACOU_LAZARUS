@@ -7,6 +7,13 @@ Objet3D::Objet3D(const std::string& nom, const std::string& vertexShaderPath, co
     defineVAO();
 };
 
+Objet3D::Objet3D(const std::string& nom, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID, const std::string& lodID)
+    : modele(nom + lodID), texture(nom + skinID), shader(vertexShaderPath, fragmentShaderPath)
+{
+    defineVBO();
+    defineVAO();
+}
+
 void Objet3D::defineVBO()
 {
     glGenBuffers(1, &vbo);            

@@ -17,6 +17,7 @@ private:
 
 public:
     explicit Objet3D(const std::string& nom = "cube", const std::string& vertexShaderPath = "3D.vs.glsl", const std::string& fragmentShaderPath = "tex3D.fs.glsl");
+    explicit Objet3D(const std::string& nom, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID, const std::string& lodID);
 
     void defineVBO();
     void defineVAO();

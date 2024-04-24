@@ -4,7 +4,9 @@
 #include "../GUI/gui.hpp"
 #include "../TrackBallCamera/TrackballCamera.hpp"
 #include "../model3D/model3D.hpp"
+#include "../joueur/joueur.hpp"
 #include "../objet3D/Objet3D.hpp"
+// #include "../controle/Controls.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
 #include "p6/p6.h"
@@ -16,13 +18,20 @@ struct Scene {
     float    taille         = 20.f;
     float    sol  = 2.f;
     Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    // Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Objet3D ovocyte{"ovocyte", "3D.vs.glsl", "tex3D.fs.glsl"};
     // Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
+    std::vector<std::pair<float, float>> positions;
 
 };
 
 class Rendu {
 private:
+    static float     _uKd;             // [GUI]
+    static float     _uKs;             // [GUI]
+    static float     _uLightIntensity; // [GUI]
+    static float     _uShininess;      // [GUI]
+    static glm::vec3 lightDir;        // [GUI]
+
   std::vector<Objet3D> objets;
   p6::Context *_ctx;
   TrackballCamera *camera;
@@ -30,12 +39,8 @@ private:
 public:
   explicit Rendu(p6::Context *ctx, TrackballCamera *camera);
 
-  void dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet) const;
+  void dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet, float transparency) const;
   void clearAll();
-  // static void initializeGUI();
-  void ajoutObj(Objet3D &objets);
-  void clearObjets();
-  void close();
 };
 
 class ProjetAffich {
@@ -43,15 +48,14 @@ private:
   p6::Context _ctx = p6::Context{{.title = "caca"}};
   Rendu rendu;
   TrackballCamera camera;
-
-  // Player             _player;
+  // Joueur  joueur;
   Scene scene;
 
   void affichageGUI() { GUI::initializeGUI(); };
 
   // void gameLogic()
   // {
-  //     _player.handleMovements();
+  //     joueur.handleMovements();
   // }
 
   void render() {
@@ -63,11 +67,14 @@ private:
     glEnable(GL_DEPTH_TEST);
 
         Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
-        rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+        rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement, 0);
         // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
         // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
         // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
         // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+
+        // Transform transfOvocyte{joueur.getPosition(), {0.f, -joueur.getLastOrientation() +180, 0.f}, .3f};
+        // rendu.dessinObjet(transfOvocyte.getTransform(), joueur.getObjet3D(), joueur.getTransparency());
 
     // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency *
     // _hoverTime); _player.animatePlayer(); Transform
@@ -81,15 +88,13 @@ private:
     {
         scene.environnement.clear();
         // scene.spermatoïde.clear();
-        // scene.ovocyte.clear();
+        scene.ovocyte.clear();
     };
 
 public:
   explicit ProjetAffich()
-      : rendu(&_ctx, &camera)
-  // _player(&_ctx, &camera, &_scene.size),
-  // camera(&_player.getPosition())
-    // camera()
+      : rendu(&_ctx, &camera) 
+      // , joueur(&_ctx, &camera, &scene.taille), camera(&joueur.getPosition())
   {
     _ctx.maximize_window();
     //     _player.handleControls();
