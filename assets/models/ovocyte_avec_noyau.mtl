@@ -1,0 +1,24 @@
+# Blender 3.6.2 MTL File: 'ovocyte.blend'
+# www.blender.org
+
+newmtl Material.001
+Ka 1.000000 1.000000 1.000000
+Kd 0.872065 0.335650 0.724705
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Ns C:/Users/HP/Documents/1ScolaireIMAC/GROS_PROJET_S4_TACOU_LAZARUS/assets/textures/coast_sand_05_rough_1k.exr
+map_Bump -bm 1.000000 C:/Users/HP/Documents/1ScolaireIMAC/GROS_PROJET_S4_TACOU_LAZARUS/assets/textures/coast_sand_05_nor_gl_1k.exr
+
+newmtl Material.002
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.383809 0.830605
+Ks 0.150000 0.150000 0.150000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 1.000000 C:/Users/HP/Documents/1ScolaireIMAC/GROS_PROJET_S4_TACOU_LAZARUS/assets/textures/coast_sand_05_nor_gl_1k.exr
