@@ -11,6 +11,7 @@
 // #include "../controle/Controls.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
+#include "main_projet/math.hpp"
 #include "p6/p6.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
@@ -63,8 +64,9 @@ private:
     GUI::initializeGUI(boids_tab, &precision);
   }
 
-  void generate_terrain(std::vector<int> & tableau_de_biomes,std::vector<std::vector<std::string>> tableau_d_obstacles)
-  {
+  void
+  generate_terrain(std::vector<int> &tableau_de_biomes,
+                   std::vector<std::vector<std::string>> &tableau_d_obstacles) {
     assign_biomes(tableau_de_biomes);
     std::vector<string> foret_rouge("arbre"); // possiblement plus que 1 seul;
     std::vector<string> royaume_champignon("champi");
@@ -72,21 +74,11 @@ private:
     tableau_d_obstacles.push_back(foret_rouge);
     tableau_d_obstacles.push_back(royaume_champignon);
     tableau_d_obstacles.push_back(ocean_sauvage);
-    for (auto &case : tableau_de_biomes)
-    {
-      if(true)//TODO aléatoire présence ou non d'élément
-      {
-
-        draw_obstacle(tableau_d_obstacles[case][deX(1)]);//prend un identifient d'obstacle ou un objet ? tableau_d_obstacles a 3 vecteurs à l'intérieur qui contiennent chacun les obstacles pour chaque élément. Dé 1 car pour l'instant on a qu'un seule obstacle par biome.l
-      }
-    }
-    
   }
-  void draw_boids(std::vector<Bid> &boids_tab, int precision) {
+  void draw_boids(std::vector<Boid> &boids_tab, const int precision) {
 
     for (auto &boidy : boids_tab) {
-      glm::vec3 position = boidy.
-      transform_boid_pos();
+      glm::vec3 position = boidy.transform_boid_pos();
       glm::vec3 rotation = boidy.transform_boid_rot();
       Transform transfBoid{position, rotation, {0.01f, 0.01f, 0.01f}};
       // Transform transfBoid{boidy.transform_boid_pos(),
@@ -108,11 +100,39 @@ private:
     }
   }
 
-  void draw_obstacle(std::vector<std::vector<std::string>> tableau_d_obstacles)
-  {
+  void draw_obstacle(std::vector<std::vector<std::string>> &biome_obstacles,
+                     std::vector<int> tableau_de_biomes) {
+    for (int i = 0; i < nbcB; i++) // parcours la hauteur, a c'est le
+                                   // nombre de cases biome dans le cube
+    {
+      for (int j = 0; j < nbcB; j++) // parcours les colonnes
+      {
+        for (int k = 0; k < nbcB; k++) // parcours les lignes
+        {
+          int compteur = k + j * nbcB + i * nbcB * nbcB;
+          if (true) // TODO aléatoire présence ou non d'élément
+          {
+            // for ((auto &obstacle : biome_obstacles)) {
 
+            //   Transform transfBoid{position, rotation, {0.01f, 0.01f,
+            //   0.01f}};
+            // }
+            float a = float(arrete_cube) / nbcB;
+
+
+            glm::vec3 position(k * a, j * a, i * a);
+            tableau_d_obstacles[tableau_de_biomes[compteur]][deX(
+                1)]; // prend un identifient d'obstacle ou un objet ?
+                     // tableau_d_obstacles a 3 vecteurs à l'intérieur qui
+                     // contiennent chacun les obstacles pour chaque élément. Dé
+                     // 1 car pour l'instant on a qu'un seule obstacle par
+                     // biome.l
+            rendu.dessinObjet(transformation_obstacle.getTransform(), scene.spermato);
+          }
+        }
+      }
+    }
   }
-
   void render(std::vector<Boid> &boids_tab, int precision) {
     rendu.clearAll();
 
@@ -136,8 +156,8 @@ private:
 
     // Transform transfOvocyte{joueur.getPosition(), {0.f,
     // -joueur.getLastOrientation() +180, 0.f}, .3f};
-    // rendu.dessinObjet(transfOvocyte.getTransform(), joueur.getObjet3D(),
-    // joueur.getTransparency());
+    // rendu.dessinObjet(transfOvocyte.getTransform(),
+    // joueur.getObjet3D(), joueur.getTransparency());
   }
 
   void cleanUp() {
@@ -163,14 +183,14 @@ public:
   ~ProjetAffich() { cleanUp(); }
 
   void update(std::vector<Boid> &boids_tab) {
-    int precision = 1;  
+    int precision = 1;
     std::vector<int> tableau_de_biomes;
     std::vector<std::vector<std::string>> tableau_d_obstacles;
 
     for (auto &boidy : boids_tab) {
       boidy.spawn_boids_repartition_exp();
     }
-    generate_terrain(tableau_de_biomes,tableau_d_obstacles);
+    generate_terrain(tableau_de_biomes, tableau_d_obstacles);
     _ctx.update = [&]() {
       // game not so Logic();
 
