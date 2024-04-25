@@ -1,4 +1,4 @@
-#include "../src/player/player.hpp"
+#include "joueur.hpp"
 
 Joueur::Joueur(glm::vec3 pos)
     : m_pos(pos), m_Phi(p6::PI), m_Theta(0.)
@@ -63,8 +63,8 @@ void Joueur::move(const p6::Context& ctx, Joueur& joueur, Camera& camera)
         savePos += -m_speed * m_UpVector;
     }
 
-    if (verifBorder(savePos, cube))
-        m_pos = savePos;
+    // if (verifBorder(savePos, cube))
+    //     m_pos = savePos;
 
     camera.setPosition(savePos);
 };

@@ -168,3 +168,14 @@ float angle_calculum(float x,float y)
   // flot cos_angle=x/norme; ceci est un commentaire pour aider à la compréhension (étape intermédiaire)
   return std::acos(x / norme);
 }
+
+// int Bernouilli(float p)
+// {
+//   float random rand01();
+//   if (random>p)
+//     return 0;
+//   else
+//     return 1;
+// }
+
+// Binomiale(float p)

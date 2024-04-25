@@ -2,7 +2,7 @@
 #include "../../lib/p6/src/Context.h"
 #include "../../lib/p6/src/internal/Time/Clock_Realtime.h"
 #include "../GUI/gui.hpp"
-#include "../TrackBallCamera/camera.hpp"
+#include "../TrackBallCamera/TrackballCamera.hpp"
 #include "../joueur/joueur.hpp"
 // #include "../lumiere/lumiere.hpp"
 #include "../model3D/model3D.hpp"
@@ -16,7 +16,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-struct Scene {
+struct Scene
+{
   float baseCube = 15.f;
   float taille = 50.f;
   Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
@@ -29,7 +30,8 @@ struct Scene {
   Objet3D poissong{"poissong", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
-class Rendu {
+class Rendu
+{
 private:
   static float _uKd;
   static float _uKs;
@@ -39,53 +41,55 @@ private:
 
   std::vector<Objet3D> objets;
   p6::Context *_ctx;
-  // TrackballCamera *camera;
+  TrackballCamera *camera;
   // Joueur joueur(glm::vec3(0.f, 0.f, 0.f));
   // Camera camera(joueur.getPosition());
 
 public:
-  // explicit Rendu(p6::Context *ctx, TrackballCamera *camera);
+  explicit Rendu(p6::Context *ctx, TrackballCamera *camera);
 
   void dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet) const;
   void clearAll();
 };
 
-class ProjetAffich {
+class ProjetAffich
+{
 private:
   p6::Context _ctx = p6::Context{{.title = "La rencontre"}};
   Rendu rendu;
-  Camera camera;
-  Joueur joueur;
+  TrackballCamera camera;
+  Joueur joueur{{0.f, 0.f, 0.f}};
   Scene scene;
 
-  // std::map<std::string, std::unique_ptr<Lumiere>> _lightsMap;
-
-  // void renderLights();
-
-  void affichageGUI(std::vector<Boid> &boids_tab, int precision) {
+  void affichageGUI(std::vector<Boid> &boids_tab, int precision)
+  {
     GUI::initializeGUI(boids_tab, &precision);
   }
 
   void generate_terrain(std::vector<int> &tableau_de_biomes,
-                        std::vector<std::vector<Objet3D>> &tableau_obstacles) {
+                        std::vector<std::vector<Objet3D>> &tableau_obstacles)
+  {
 
     assign_biomes(tableau_de_biomes);
 
-    std::vector<Objet3D> foret_rouge;
-    std::vector<Objet3D> royaume_champignon;
-    std::vector<Objet3D> ocean_sauvage;
-    foret_rouge.push(scene.arbre);
-    royaume_champignon.push(scene.champi);
-    ocean_sauvage.push(scene.poissong);
-    ; // possiblement plus que 1 seul;
-    tableau_obstacles.push_back(foret_rouge);
-    tableau_obstacles.push_back(royaume_champignon);
-    tableau_obstacles.push_back(ocean_sauvage);
+    // std::vector<Objet3D> foret_rouge;
+    // std::vector<Objet3D> royaume_champignon;
+    // std::vector<Objet3D> ocean_sauvage;
+    // foret_rouge.push(scene.arbre);
+    // royaume_champignon.push(scene.champi);
+    // ocean_sauvage.push(scene.poissong);
+    // possiblement plus que 1 seul;
+
+    // tableau_obstacles.push_back(foret_rouge);
+    // tableau_obstacles.push_back(royaume_champignon);
+    // tableau_obstacles.push_back(ocean_sauvage);
   }
 
-  void draw_boids(std::vector<Boid> &boids_tab, const int precision) {
+  void draw_boids(std::vector<Boid> &boids_tab, const int precision)
+  {
 
-    for (auto &boidy : boids_tab) {
+    for (auto &boidy : boids_tab)
+    {
       glm::vec3 position = boidy.transform_boid_pos();
       glm::vec3 rotation = boidy.transform_boid_rot();
       Transform transfBoid{position, rotation, {0.01f, 0.01f, 0.01f}};
@@ -96,20 +100,24 @@ private:
       // transfBoid.setPosition(boidy.transform_boid_pos());
       // transfBoid.setRotation(boidy.transform_boid_rot());
 
-      if (precision == 1) {
+      if (precision == 1)
+      {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato);
       }
-      if (precision == 2) {
+      if (precision == 2)
+      {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato_m790);
       }
-      if (precision == 3) {
+      if (precision == 3)
+      {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato_tete);
       }
     }
   }
 
   void draw_obstacle(std::vector<std::vector<Objet3D>> &tableau_obstacles,
-                     std::vector<int> tableau_de_biomes) {
+                     std::vector<int> tableau_de_biomes)
+  {
     for (int i = 0; i < nbcB; i++) // parcours la hauteur, a c'est le
                                    // nombre de cases biome dans le cube
     {
@@ -129,18 +137,39 @@ private:
             // contiennent chacun les obstacles pour chaque élément. Dé
             // 1 car pour l'instant on a qu'un seule obstacle par
             // biome.l
-            rendu.dessinObjet(
-                transfobstacle.getTransform(),
-                scene.tableau_obstacles[tableau_de_biomes[compteur]][deX(1)]);
+
+            //   rendu.dessinObjet(
+            //       transfobstacle.getTransform(),
+            //       scene.tableau_obstacles[tableau_de_biomes[compteur]][deX(1)]);
+            // }
           }
         }
       }
     }
   }
 
-  void render(std::vector<Boid> &boids_tab, int precision,
-              std::vector<std::vector<Objet3D>> &tableau_obstacles,
-              std::vector<int> tableau_de_biomes) {
+  void cameraMove()
+  {
+    _ctx.mouse_moved = [&](p6::MouseMove event)
+    {
+      std::cout << event.delta.x << std::endl;
+      const float sensitivity = 150.f; // Ajustez à votre convenance
+      camera.rotateLeft(event.delta.x * sensitivity);
+      camera.rotateUp(-event.delta.y *
+                      sensitivity); // Inversion de Y pour une rotation intuitive
+    };
+
+    _ctx.mouse_scrolled = [&](p6::MouseScroll event)
+    {
+      camera.moveFront(event.dy);
+    };
+  }
+
+  // void render(std::vector<Boid> &boids_tab, int precision,
+  //             std::vector<std::vector<Objet3D>> &tableau_obstacles,
+  //             std::vector<int> tableau_de_biomes)
+  void render(std::vector<Boid> &boids_tab, int precision)
+  {
     rendu.clearAll();
 
     _ctx.background(p6::NamedColor::Yellow);
@@ -161,7 +190,7 @@ private:
 
     draw_boids(boids_tab, precision);
 
-    draw_obstacle(tableau_obstacles, tableau_de_biomes);
+    // draw_obstacle(tableau_obstacles, tableau_de_biomes);
 
     // Transform transfOvocyte{joueur.getPosition(), {0.f,
     // -joueur.getLastOrientation() +180, 0.f}, .3f};
@@ -169,12 +198,15 @@ private:
     // joueur.getObjet3D(), joueur.getTransparency());
   }
 
-  void cleanUp() {
+  void cleanUp()
+  {
     scene.environnement.clear();
     scene.spermato.clear();
-    // scene.poissong.clear();
-    // scene.champi.clear();
-    // scene.arbre.clear();
+    scene.spermato_m790.clear();
+    scene.spermato_tete.clear();
+    scene.poissong.clear();
+    scene.champi.clear();
+    scene.arbre.clear();
     // scene.ovocyte.clear();
     scene.environnement.clear();
   }
@@ -191,27 +223,34 @@ public:
 
   ~ProjetAffich() { cleanUp(); }
 
-  void update(std::vector<Boid> &boids_tab) {
+  void update(std::vector<Boid> &boids_tab)
+  {
     int precision = 1;
     std::vector<int> tableau_de_biomes;
-    std::vector<std::vector<Objet3D>> tableau_obstacles;
+    // std::vector<std::vector<Objet3D>> tableau_obstacles;
 
-    for (auto &boidy : boids_tab) {
+    cameraMove();
+
+    for (auto &boidy : boids_tab)
+    {
       boidy.spawn_boids_repartition_exp();
     }
-    generate_terrain(tableau_de_biomes, tableau_obstacles);
-    _ctx.update = [&]() {
+    // generate_terrain(tableau_de_biomes, tableau_obstacles);
+    _ctx.update = [&]()
+    {
       // game not so Logic();
 
       // Setup context GUI
 
       GUI::initializeGUI(boids_tab, &precision);
 
-      for (auto &boidy : boids_tab) {
+      for (auto &boidy : boids_tab)
+      {
         boidy.deplacement_boids(boids_tab);
       }
 
-      render(boids_tab, precision, tableau_de_biomes, tableau_obstacles);
+      render(boids_tab, precision);
+      // render(boids_tab, precision, tableau_obstacles, tableau_de_biomes);
     };
   }
 
