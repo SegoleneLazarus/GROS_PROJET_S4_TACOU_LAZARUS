@@ -18,11 +18,9 @@ private:
 
     Objet3D objet3D{"ovocyte", "3D.vs.glsl", "tex3D.fs.glsl"};
 
-    float _hoverAmplitude = 0.1f; // [GUI]
-    float _hoverFrequency = 2.0f; // [GUI]
+    float _hoverAmplitude = 0.1f;
+    float _hoverFrequency = 2.0f;
     float _hoverTime = 0.0f;
-
-    float _transparency = 1.f; // [GUI]
 
 public:
     Joueur(p6::Context *ctx, TrackballCamera *camera, float *mapSize);

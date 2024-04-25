@@ -8,8 +8,6 @@ Joueur::Joueur(p6::Context *ctx, TrackballCamera *camera, float *mapSize)
 
 void Joueur::handleControls()
 {
-    // controls.handleCameraZoom();
-    // controls.handleCameraRotation();
 }
 
 void Joueur::handleMovements()

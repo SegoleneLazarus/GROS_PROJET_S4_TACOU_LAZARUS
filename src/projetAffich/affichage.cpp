@@ -1,10 +1,10 @@
 #include "affichage.hpp"
 
-float Rendu::_uKd = 0.1f;                         // [GUI]
-float Rendu::_uKs = 1.14f;                        // [GUI]
-float Rendu::_uLightIntensity = .012f;            // [GUI]
-float Rendu::_uShininess = .006f;                 // [GUI]
-glm::vec3 Rendu::lightDir{17.36f, 15.48f, 7.81f}; // [GUI]
+float Rendu::_uKd = 0.1f;
+float Rendu::_uKs = 1.14f;
+float Rendu::_uLightIntensity = .012f;
+float Rendu::_uShininess = .006f;
+glm::vec3 Rendu::lightDir{17.36f, 15.48f, 7.81f};
 
 Rendu::Rendu(p6::Context *ctx, TrackballCamera *camera)
     : _ctx(ctx), camera(camera)
@@ -27,24 +27,12 @@ void Rendu::dessinObjet(const glm::mat4 &modelMatrix, const Objet3D &objet) cons
     glBindVertexArray(objet.getVAO());
     objet.getShader().shader.use();
 
-    // Handle transparancy
-    // if (transparency < 1.f)
-    // {
-    //     glEnable(GL_BLEND);
-    //     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // }
-    // else
-    // {
-    //     glDisable(GL_BLEND);
-    // };
-
     glUniform3f(objet.getShader().uKd, _uKd, _uKd, _uKd);
     glUniform3f(objet.getShader().uKs, _uKs, _uKs, _uKs);
     glUniform3fv(objet.getShader().uLightDir_vs, 1, glm::value_ptr(glm::vec4(lightDir, 1.f) * glm::inverse(viewMatrix)));
     glUniform3fv(objet.getShader().uLightPos_vs, 1, glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
     glUniform3f(objet.getShader().uLightIntensity, _uLightIntensity, _uLightIntensity, _uLightIntensity);
     glUniform1f(objet.getShader().uShininess, _uShininess);
-    // glUniform1f(objet.getShader().uTransparency, transparency);
     glUniform1i(objet.getShader().uTexture, 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, objet.getTexture().getTextureID());

@@ -43,8 +43,6 @@ private:
   std::vector<Objet3D> objets;
   p6::Context *_ctx;
   TrackballCamera *camera;
-  // Joueur joueur(glm::vec3(0.f, 0.f, 0.f));
-  // Camera camera(joueur.getPosition());
 
 public:
   explicit Rendu(p6::Context *ctx, TrackballCamera *camera);
@@ -156,10 +154,10 @@ private:
     _ctx.mouse_moved = [&](p6::MouseMove event)
     {
       std::cout << event.delta.x << std::endl;
-      const float sensitivity = 150.f; // Ajustez à votre convenance
+      const float sensitivity = 100.f;
       camera.rotateLeft(event.delta.x * sensitivity);
       camera.rotateUp(-event.delta.y *
-                      sensitivity); // Inversion de Y pour une rotation intuitive
+                      sensitivity);
     };
 
     _ctx.mouse_scrolled = [&](p6::MouseScroll event)
@@ -216,8 +214,6 @@ private:
 public:
   explicit ProjetAffich()
       : rendu(&_ctx, &camera), joueur(&_ctx, &camera, &scene.taille), camera(&joueur.getPosition())
-  // _player(&_ctx, &camera, &_scene.size),
-  // camera(&_player.getPosition())
   {
     _ctx.maximize_window();
     joueur.handleControls();
@@ -225,7 +221,7 @@ public:
 
   ~ProjetAffich() { cleanUp(); }
 
-  void update(std::vector<Boid> &boids_tab)
+  void update(std::vector<Boid> &boids_tab,time_t tmm)
   {
     std::vector<int> tableau_de_biomes;
     // std::vector<std::vector<Objet3D>> tableau_obstacles;
@@ -240,10 +236,6 @@ public:
     _ctx.update = [&]()
     {
       joueur.handleMovements();
-      
-      // game not so Logic();
-
-      // Setup context GUI
 
       GUI::initializeGUI(boids_tab, precision);
 

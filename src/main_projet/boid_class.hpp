@@ -10,6 +10,8 @@
 #include <iostream>
 #include <random>
 #include <time.h>
+#include <ctime>
+
 
 glm::vec3 normalize_to_vit(glm::vec3 position, glm::vec3 vitesse); // 3D
 

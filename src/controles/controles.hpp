@@ -19,18 +19,11 @@ private:
     float *_mapSize;
     float _margin = .5f;
 
-    // float _scrollSensitivity = .2f;  // [GUI]
-    // float _mouseSensitivity  = 90.f; // [GUI]
-    // float _minScrollDistance = .5f; // [GUI]
-    // float _maxScrollDistance = 5.f; // [GUI]
-
-    float _movementSpeed = .1f; // [GUI]
+    float _movementSpeed = .1f;
 
 public:
     Controles(p6::Context *ctx, TrackballCamera *camera, float *mapSize);
 
-    // void      handleCameraZoom();
-    // void      handleCameraRotation();
     void handlePlayerMovements(glm::vec3 &playerPosition);
     glm::vec3 getLastDirection() { return lastDirection; };
 };
