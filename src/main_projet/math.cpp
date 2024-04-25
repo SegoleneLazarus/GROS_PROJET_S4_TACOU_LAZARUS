@@ -164,7 +164,7 @@ int chaine_de_markov(int biome_actuel) {
 float angle_calculum(float x,float y)
 {
   glm::vec2 vit(x, y);
-  float norme = glm_vec2_norm(vit);
+  float norme = length(vit);
   // flot cos_angle=x/norme; ceci est un commentaire pour aider à la compréhension (étape intermédiaire)
   return std::acos(x / norme);
 }

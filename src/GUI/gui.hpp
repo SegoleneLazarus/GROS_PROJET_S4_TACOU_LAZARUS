@@ -12,5 +12,5 @@ private:
   static int precision;
 
 public:
-  static void initializeGUI(std::vector<Boid> &boids_tab);
+  static void initializeGUI(std::vector<Boid> &boids_tab, int *precision);
 };

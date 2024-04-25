@@ -4,9 +4,10 @@
 #include "../GUI/gui.hpp"
 #include "../TrackBallCamera/TrackballCamera.hpp"
 #include "../joueur/joueur.hpp"
+#include "../lumiere/lumiere.hpp"
 #include "../model3D/model3D.hpp"
 #include "../objet3D/Objet3D.hpp"
-#include "../lumiere/lumiere.hpp"
+
 // #include "../controle/Controls.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
@@ -26,11 +27,11 @@ struct Scene {
 
 class Rendu {
 private:
-  static float _uKd;  
-  static float _uKs;  
-  static float _uLightIntensity; 
-  static float _uShininess; 
-  static glm::vec3 lightDir; 
+  static float _uKd;
+  static float _uKs;
+  static float _uLightIntensity;
+  static float _uShininess;
+  static glm::vec3 lightDir;
 
   std::vector<Objet3D> objets;
   p6::Context *_ctx;
@@ -51,45 +52,40 @@ private:
   // Joueur  joueur;
   Scene scene;
 
-  std::map<std::string, std::unique_ptr<Lumiere>> _lightsMap;
+  // std::map<std::string, std::unique_ptr<Lumiere>> _lightsMap;
 
-  void renderLights();
+  // void renderLights();
 
-  void affichageGUI(std::vector<Boid> &boids_tab) {
-    GUI::initializeGUI(boids_tab);
+  void affichageGUI(std::vector<Boid> &boids_tab, int precision) {
+    GUI::initializeGUI(boids_tab, &precision);
   }
 
-  void draw_boids(std::vector<Boid> &boids_tab)
-  {
-    Transform transfBoid{{1.f, 1.f,1.f}
-  ,      {0.f, 0.f, 0.f},
-  { 0.f, 0.f, 0.f}};
+  void draw_boids(std::vector<Boid> &boids_tab, int precision) {
+    Transform transfBoid{{1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}};
     for (auto &boidy : boids_tab) {
-      boidy.transform_boid(&transfBoid);
-      if(precision == 1){
+      transfBoid = boidy.transform_boid(transfBoid);
+      if (precision == 1) {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato);
       }
-      if(precision == 2){
+      if (precision == 2) {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato2);
       }
-      if(precision == 3){
+      if (precision == 3) {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato3);
       }
-      
-  }
-    
+    }
   }
 
-//   void Rendu::renderLights()
-// {
-//     this->_lightsMap["lightCharacter"]->setPosition(this->_firefly.getPosition());
-//     for (auto& light : this->_lightsMap)
-//     {
-//         light.second->update(this->_viewMatrix.getViewMatrix());
-//     }
-// }
+  //   void Rendu::renderLights()
+  // {
+  //     this->_lightsMap["lightCharacter"]->setPosition(this->_firefly.getPosition());
+  //     for (auto& light : this->_lightsMap)
+  //     {
+  //         light.second->update(this->_viewMatrix.getViewMatrix());
+  //     }
+  // }
 
-  void render(std::vector<Boid> &boids_tab) {
+  void render(std::vector<Boid> &boids_tab, int precision) {
     rendu.clearAll();
 
     _ctx.background(p6::NamedColor::Yellow);
@@ -97,19 +93,16 @@ private:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    Transform transfEnviro{{1.f, -1.f, 3.f},
-                           {0.f, 0.f, 0.f},
-                           scene.taille / scene.baseCube};
+    Transform transfEnviro{
+        {1.f, -1.f, 3.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
     rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
 
+    draw_boids(boids_tab, precision);
 
-    // draw_boids(boids_tab);
-    
     // Transform transfOvocyte{joueur.getPosition(), {0.f,
     // -joueur.getLastOrientation() +180, 0.f}, .3f};
     // rendu.dessinObjet(transfOvocyte.getTransform(), joueur.getObjet3D(),
     // joueur.getTransparency());
-
   }
 
   void cleanUp() {
@@ -136,13 +129,14 @@ public:
       // game not so Logic();
 
       // Setup context GUI
-      GUI::initializeGUI(boids_tab);
+      int precision = 1;
+      GUI::initializeGUI(boids_tab, &precision);
 
       implementation_boids(boids_tab);
 
       // affichage_boids(boids_tab);
 
-      render(boids_tab);
+      render(boids_tab, precision);
     };
   }
 

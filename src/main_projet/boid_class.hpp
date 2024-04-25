@@ -1,5 +1,6 @@
 #pragma once
 #include "../lib/p6/include/p6/p6.h"
+#include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 #include "math.hpp"
@@ -9,7 +10,6 @@
 #include <iostream>
 #include <random>
 #include <time.h>
-#include "../transfObjet/transfObjet.hpp"
 
 glm::vec3 normalize_to_vit(glm::vec3 position, glm::vec3 vitesse); // 3D
 
@@ -264,11 +264,13 @@ public:
           norme; // on a pas changé la direction, seulement la norme
   }
 
-  void transform_boid(Transform &transfBoid) { //3D
-    transfBoid.position = vec3(pos.x, pos.y, pos.z);
-    transfBoid.rotation = vec3(angle_calculum(vit.y,vit.z), angle_calculum(vit.z,vit.x), angle_calculum(vit.x,vit.y));
+  Transform transform_boid(Transform transfBoid) { // 3D
+    transfBoid.setPosition(glm::vec3(pos.x, pos.y, pos.z));
+    transfBoid.setRotation(glm::vec3(angle_calculum(vit.y, vit.z),
+                                     angle_calculum(vit.z, vit.x),
+                                     angle_calculum(vit.x, vit.y)));
+    return transfBoid;
   }
-
 };
 
 void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids);
