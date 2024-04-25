@@ -34,8 +34,3 @@ void implementation_boids(std::vector<Boid> &boids_tab) {
   }
 }
 
-// void affichage_boids(std::vector<Boid> &boids_tab) {
-//   for (auto &boidy : boids_tab) {
-//     boidy.draw();
-//   }
-// }

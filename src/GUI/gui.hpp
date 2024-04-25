@@ -9,6 +9,7 @@ private:
   static float alignement_force;
   static float separation_force;
   static float cohesion_force;
+  static int precision;
 
 public:
   static void initializeGUI(std::vector<Boid> &boids_tab);

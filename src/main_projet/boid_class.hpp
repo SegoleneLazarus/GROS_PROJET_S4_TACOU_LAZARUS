@@ -9,6 +9,8 @@
 #include <iostream>
 #include <random>
 #include <time.h>
+#include "transfObjet.hpp"
+#include
 
 glm::vec3 normalize_to_vit(glm::vec3 position, glm::vec3 vitesse); // 3D
 
@@ -263,9 +265,11 @@ public:
           norme; // on a pas changé la direction, seulement la norme
   }
 
-  void draw_boid(p6::Context &ctx) { // 2D
-    ctx.circle(p6::Center{pos}, p6::Radius{0.02f});
+  void transform_boid(Transform &transfBoid) { //3D
+    transfBoid.position = vec3(pos.x, pos.y, pos.z);
+    transfBoid.rotation = vec3(angle_calculum(vit.y,vit.z), angle_calculum(vit.z,vit.x), angle_calculum(vit.x,vit.y));
   }
+
 };
 
 void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids);

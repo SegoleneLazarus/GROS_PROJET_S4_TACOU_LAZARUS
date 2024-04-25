@@ -6,7 +6,7 @@
 #include "../joueur/joueur.hpp"
 #include "../model3D/model3D.hpp"
 #include "../objet3D/Objet3D.hpp"
-
+#include "../lumiere/lumiere.hpp"
 // #include "../controle/Controls.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
@@ -16,21 +16,21 @@
 
 struct Scene {
   float baseCube = 15.f;
-  float taille = 20.f;
-  float sol = 2.f;
+  float taille = 50.f;
   Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
-  // Objet3D ovocyte{"ovocyte_avec_noyau", "3D.vs.glsl", "tex3D.fs.glsl"};
-  // Objet3D spermatoïde{"spermatoïde", "3D.vs.glsl", "tex3D.fs.glsl"};
-  // Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D ovocyte{"ovocyte", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D spermato{"spermato", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D spermato2{"spermato2", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D spermato3{"spermato3", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class Rendu {
 private:
-  static float _uKd;             // [GUI]
-  static float _uKs;             // [GUI]
-  static float _uLightIntensity; // [GUI]
-  static float _uShininess;      // [GUI]
-  static glm::vec3 lightDir;     // [GUI]
+  static float _uKd;  
+  static float _uKs;  
+  static float _uLightIntensity; 
+  static float _uShininess; 
+  static glm::vec3 lightDir; 
 
   std::vector<Objet3D> objets;
   p6::Context *_ctx;
@@ -51,16 +51,45 @@ private:
   // Joueur  joueur;
   Scene scene;
 
+  std::map<std::string, std::unique_ptr<Lumiere>> _lightsMap;
+
+  void renderLights();
+
   void affichageGUI(std::vector<Boid> &boids_tab) {
     GUI::initializeGUI(boids_tab);
   }
 
-  // void gameLogic()
-  // {
-  //     joueur.handleMovements();
-  // }
+  void draw_boids(std::vector<Boid> &boids_tab)
+  {
+    Transform transfBoid{{1.f, 1.f,1.f}
+  ,      {0.f, 0.f, 0.f},
+  { 0.f, 0.f, 0.f}};
+    for (auto &boidy : boids_tab) {
+      boidy.transform_boid(&transfBoid);
+      if(precision == 1){
+        rendu.dessinObjet(transfBoid.getTransform(), scene.spermato);
+      }
+      if(precision == 2){
+        rendu.dessinObjet(transfBoid.getTransform(), scene.spermato2);
+      }
+      if(precision == 3){
+        rendu.dessinObjet(transfBoid.getTransform(), scene.spermato3);
+      }
+      
+  }
+    
+  }
 
-  void render() {
+//   void Rendu::renderLights()
+// {
+//     this->_lightsMap["lightCharacter"]->setPosition(this->_firefly.getPosition());
+//     for (auto& light : this->_lightsMap)
+//     {
+//         light.second->update(this->_viewMatrix.getViewMatrix());
+//     }
+// }
+
+  void render(std::vector<Boid> &boids_tab) {
     rendu.clearAll();
 
     _ctx.background(p6::NamedColor::Yellow);
@@ -68,32 +97,24 @@ private:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    Transform transfEnviro{{5.f, 0.f, 5.f},
+    Transform transfEnviro{{1.f, -1.f, 3.f},
                            {0.f, 0.f, 0.f},
                            scene.taille / scene.baseCube};
     rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
-    // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f,
-    // 0.f, 0.f}, scene.taille / scene.baseCube};
-    // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
-    // Transform transfEnviro{{0.f, (scene.taille / 2) - scene.sol, 0.f}, {0.f,
-    // 0.f, 0.f}, scene.taille / scene.baseCube};
-    // rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
 
+
+    // draw_boids(boids_tab);
+    
     // Transform transfOvocyte{joueur.getPosition(), {0.f,
     // -joueur.getLastOrientation() +180, 0.f}, .3f};
     // rendu.dessinObjet(transfOvocyte.getTransform(), joueur.getObjet3D(),
     // joueur.getTransparency());
 
-    // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency *
-    // _hoverTime); _player.animatePlayer(); Transform
-    // ghostTransform{_player.getPosition(), {0.f, -_player.getLastOrientation()
-    // + 180, 0.f}, .3f}; _renderer.drawObject(ghostTransform.getTransform(),
-    // _player.getObject3D());
   }
 
   void cleanUp() {
     scene.environnement.clear();
-    // scene.spermatoïde.clear();
+    // scene.spermato.clear();
     // scene.ovocyte.clear();
     scene.environnement.clear();
   }
@@ -121,7 +142,7 @@ public:
 
       // affichage_boids(boids_tab);
 
-      render();
+      render(boids_tab);
     };
   }
 
