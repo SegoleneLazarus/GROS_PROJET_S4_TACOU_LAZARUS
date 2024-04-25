@@ -21,8 +21,11 @@ struct Scene {
   Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
   Objet3D ovocyte{"ovocyte", "3D.vs.glsl", "tex3D.fs.glsl"};
   Objet3D spermato{"spermato", "3D.vs.glsl", "tex3D.fs.glsl"};
-  Objet3D spermato2{"spermato2", "3D.vs.glsl", "tex3D.fs.glsl"};
-  Objet3D spermato3{"spermato3", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D spermato2{"spermato2", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D spermato3{"spermato3", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D arbre{"arbre", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D champi{"champi", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D poissong{"poissong", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class Rendu {
@@ -67,23 +70,14 @@ private:
       if (precision == 1) {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato);
       }
-      if (precision == 2) {
-        rendu.dessinObjet(transfBoid.getTransform(), scene.spermato2);
-      }
-      if (precision == 3) {
-        rendu.dessinObjet(transfBoid.getTransform(), scene.spermato3);
-      }
+      // if (precision == 2) {
+      //   rendu.dessinObjet(transfBoid.getTransform(), scene.spermato2);
+      // }
+      // if (precision == 3) {
+      //   rendu.dessinObjet(transfBoid.getTransform(), scene.spermato3);
+      // }
     }
   }
-
-  //   void Rendu::renderLights()
-  // {
-  //     this->_lightsMap["lightCharacter"]->setPosition(this->_firefly.getPosition());
-  //     for (auto& light : this->_lightsMap)
-  //     {
-  //         light.second->update(this->_viewMatrix.getViewMatrix());
-  //     }
-  // }
 
   void render(std::vector<Boid> &boids_tab, int precision) {
     rendu.clearAll();
@@ -95,7 +89,12 @@ private:
 
     Transform transfEnviro{
         {1.f, -1.f, 3.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
+    Transform transfDecor{
+        {1.f, -1.f, 3.f}, {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}};
     rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
+    // rendu.dessinObjet(transfEnviro.getTransform(), scene.poissong);
+    // rendu.dessinObjet(transfDecor.getTransform(), scene.champi);
+    // rendu.dessinObjet(transfEnviro.getTransform(), scene.arbre);
 
     draw_boids(boids_tab, precision);
 
@@ -107,7 +106,10 @@ private:
 
   void cleanUp() {
     scene.environnement.clear();
-    // scene.spermato.clear();
+    scene.spermato.clear();
+    scene.poissong.clear();
+    scene.champi.clear();
+    scene.arbre.clear();
     // scene.ovocyte.clear();
     scene.environnement.clear();
   }
@@ -133,8 +135,6 @@ public:
       GUI::initializeGUI(boids_tab, &precision);
 
       implementation_boids(boids_tab);
-
-      // affichage_boids(boids_tab);
 
       render(boids_tab, precision);
     };
