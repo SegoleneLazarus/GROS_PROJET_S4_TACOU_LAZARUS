@@ -11,7 +11,8 @@
 
 int main() {
   std::srand(time(NULL));
-  time_t tmm = time(0);
+  auto start = std::chrono::high_resolution_clock::now();
+
   // Run the tests
   if (doctest::Context{}.run() != 0)
     return EXIT_FAILURE;
@@ -25,7 +26,7 @@ int main() {
   pushb_boids(boids_tab, 40);
   
   // update loop
-  App.update(boids_tab,tmm);
+  App.update(boids_tab);
 
   App.start();
   App.stop();

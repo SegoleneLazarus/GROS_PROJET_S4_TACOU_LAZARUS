@@ -4,12 +4,8 @@
 #include "../GUI/gui.hpp"
 #include "../TrackBallCamera/TrackballCamera.hpp"
 #include "../joueur/joueur.hpp"
-// #include "../controles/controles.hpp"
-// #include "../lumiere/lumiere.hpp"
 #include "../model3D/model3D.hpp"
 #include "../objet3D/Objet3D.hpp"
-
-// #include "../controle/Controls.hpp"
 #include "../transfObjet/transfObjet.hpp"
 #include "glm/fwd.hpp"
 #include "main_projet/math.hpp"
@@ -221,7 +217,7 @@ public:
 
   ~ProjetAffich() { cleanUp(); }
 
-  void update(std::vector<Boid> &boids_tab,time_t tmm)
+  void update(std::vector<Boid> &boids_tab)
   {
     std::vector<int> tableau_de_biomes;
     // std::vector<std::vector<Objet3D>> tableau_obstacles;
