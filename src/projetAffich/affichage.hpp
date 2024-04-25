@@ -55,7 +55,7 @@ private:
   p6::Context _ctx = p6::Context{{.title = "La rencontre"}};
   Rendu rendu;
   Camera camera;
-  Joueur  joueur;
+  Joueur joueur;
   Scene scene;
 
   // std::map<std::string, std::unique_ptr<Lumiere>> _lightsMap;
@@ -66,15 +66,18 @@ private:
     GUI::initializeGUI(boids_tab, &precision);
   }
 
-  void
-  generate_terrain(std::vector<int> &tableau_de_biomes,
-                   std::vector<std::vector<Objet3D>> &tableau_obstacles) {
-                    
+  void generate_terrain(std::vector<int> &tableau_de_biomes,
+                        std::vector<std::vector<Objet3D>> &tableau_obstacles) {
+
     assign_biomes(tableau_de_biomes);
 
-    std::vector<Objet3D> foret_rouge(arbre); // possiblement plus que 1 seul;
-    std::vector<Objet3D> royaume_champignon(champi);
-    std::vector<Objet3D> ocean_sauvage(poissong);
+    std::vector<Objet3D> foret_rouge;
+    std::vector<Objet3D> royaume_champignon;
+    std::vector<Objet3D> ocean_sauvage;
+    foret_rouge.push(scene.arbre);
+    royaume_champignon.push(scene.champi);
+    ocean_sauvage.push(scene.poissong);
+    ; // possiblement plus que 1 seul;
     tableau_obstacles.push_back(foret_rouge);
     tableau_obstacles.push_back(royaume_champignon);
     tableau_obstacles.push_back(ocean_sauvage);
@@ -117,23 +120,27 @@ private:
           int compteur = k + j * int(nbcB) + i * int(nbcB * nbcB);
           if (true) // TODO aléatoire présence ou non d'élément
           {
-              float a = float(arrete_cube) / nbcB;
+            float a = float(arrete_cube) / nbcB;
 
-              glm::vec3 position(k * a, j * a, i * a);
-              Transform transfobstacle{position, {0.f, 0.f,
-              0.f}, {0.001f, 0.001f,0.001f}};
-                     // tableau_obstacles a 3 vecteurs à l'intérieur qui
-                     // contiennent chacun les obstacles pour chaque élément. Dé
-                     // 1 car pour l'instant on a qu'un seule obstacle par
-                     // biome.l
-            rendu.dessinObjet(transfobstacle.getTransform(), scene.tableau_obstacles[tableau_de_biomes[compteur]][deX(1)]);
+            glm::vec3 position(k * a, j * a, i * a);
+            Transform transfobstacle{
+                position, {0.f, 0.f, 0.f}, {0.001f, 0.001f, 0.001f}};
+            // tableau_obstacles a 3 vecteurs à l'intérieur qui
+            // contiennent chacun les obstacles pour chaque élément. Dé
+            // 1 car pour l'instant on a qu'un seule obstacle par
+            // biome.l
+            rendu.dessinObjet(
+                transfobstacle.getTransform(),
+                scene.tableau_obstacles[tableau_de_biomes[compteur]][deX(1)]);
           }
         }
       }
     }
   }
 
-  void render(std::vector<Boid> &boids_tab, int precision,std::vector<std::vector<Objet3D>> &tableau_obstacles,std::vector<int> tableau_de_biomes) {
+  void render(std::vector<Boid> &boids_tab, int precision,
+              std::vector<std::vector<Objet3D>> &tableau_obstacles,
+              std::vector<int> tableau_de_biomes) {
     rendu.clearAll();
 
     _ctx.background(p6::NamedColor::Yellow);
@@ -154,7 +161,7 @@ private:
 
     draw_boids(boids_tab, precision);
 
-    draw_obstacle(tableau_obstacles,tableau_de_biomes);
+    draw_obstacle(tableau_obstacles, tableau_de_biomes);
 
     // Transform transfOvocyte{joueur.getPosition(), {0.f,
     // -joueur.getLastOrientation() +180, 0.f}, .3f};
@@ -204,7 +211,7 @@ public:
         boidy.deplacement_boids(boids_tab);
       }
 
-      render(boids_tab, precision,tableau_de_biomes, tableau_obstacles);
+      render(boids_tab, precision, tableau_de_biomes, tableau_obstacles);
     };
   }
 
