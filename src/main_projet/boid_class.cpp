@@ -27,10 +27,10 @@ void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids) {
   }
 }
 
-void implementation_boids(std::vector<Boid> &boids_tab) {
+// void implementation_boids(std::vector<Boid> &boids_tab) {
 
-  for (auto &boidy : boids_tab) {
-    boidy.deplacement_boids(boids_tab);
-  }
-}
+//   for (auto &boidy : boids_tab) {
+//     boidy.deplacement_boids(boids_tab);
+//   }
+// }
 

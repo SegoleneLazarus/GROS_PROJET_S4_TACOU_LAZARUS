@@ -64,11 +64,17 @@ private:
   }
 
   void draw_boids(std::vector<Boid> &boids_tab, int precision) {
-    Transform transfBoid{
-        {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {0.01f, 0.01f, 0.01f}};
+
     for (auto &boidy : boids_tab) {
-      transfBoid.setPosition(boidy.transform_boid_pos());
-      transfBoid.setRotation(boidy.transform_boid_rot());
+      glm::vec3 position = boidy.transform_boid_pos();
+      glm::vec3 rotation = boidy.transform_boid_rot();
+      Transform transfBoid{position, rotation, {0.01f, 0.01f, 0.01f}};
+      // Transform transfBoid{boidy.transform_boid_pos(),
+      //                      boidy.transform_boid_rot(),
+      //                      {0.01f, 0.01f, 0.01f}};
+
+      // transfBoid.setPosition(boidy.transform_boid_pos());
+      // transfBoid.setRotation(boidy.transform_boid_rot());
 
       if (precision == 1) {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato);
@@ -90,9 +96,10 @@ private:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    Transform transfEnviro{{1.f, -1.f, 3.f},
-                           {0.f, 0.f, 0.f},
-                           arrete_cube * scene.taille / scene.baseCube};
+    Transform transfEnviro{
+        {0.f, (-arrete_cube * scene.taille / scene.baseCube) / 2, 0.f},
+        {0.f, 0.f, 0.f},
+        arrete_cube * scene.taille / scene.baseCube / 2};
     // Transform transfDecor{
     //     {1.f, -1.f, 3.f}, {0.f, 0.f, 0.f}, {0.1f, 0.1f, 0.1f}};
     rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
@@ -132,6 +139,9 @@ public:
 
   void update(std::vector<Boid> &boids_tab) {
     int precision = 1;
+    for (auto &boidy : boids_tab) {
+      boidy.spawn_boids_repartition_exp();
+    }
     _ctx.update = [&]() {
       // game not so Logic();
 
@@ -139,7 +149,9 @@ public:
 
       GUI::initializeGUI(boids_tab, &precision);
 
-      implementation_boids(boids_tab);
+      for (auto &boidy : boids_tab) {
+        boidy.deplacement_boids(boids_tab);
+      }
 
       render(boids_tab, precision);
     };

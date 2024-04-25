@@ -4,7 +4,7 @@
 #include <vector>
 
 #define nbcB 10.0f // nombres de cases de biomes
-#define arrete_cube 2
+#define arrete_cube 4
 
 void assign_biomes(std::vector<int> &tableau_de_biomes);
 

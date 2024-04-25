@@ -114,7 +114,7 @@ public:
                            vit);
   }
 
-  void deplacement_boids(const std::vector<Boid> &boids_tab) { // 3D
+  void deplacement_boids(const std::vector<Boid> &boids_tab) { //
     this->cohesion(boids_tab);
     this->separation(boids_tab);
     this->alignement(boids_tab);
@@ -245,19 +245,20 @@ public:
     }
   }
 
-  void spawn_boids_repartition_exp() { // objectif : donner une répartition du
-                                       // spawn des boids
+  void spawn_boids_repartition_exp(
+      float lambda = 1) { // objectif : donner une répartition du
+                          // spawn des boids
     // suivant une probabilité exponentielle qui fait
     // apparaitre principalement vers les extrémités du
     // cube, le spawn étant centré
     // cette fonction s'applique sur un seul boid, il faut la mettre dans une
     // boucle
 
-    float random = expo(1);
+    float random = expo(lambda);
     while (random > 4) // on néglige les résultats extrèmes;
-      random = expo(1);
+      random = expo(lambda);
     float norme =
-        (4 - expo(1)) *
+        (4 - expo(lambda)) *
         0.25; // en gros 1-expo/4 pour bien avoir  bc de boids vers l'extérieur
     pos = normalize(pos) *
           norme; // on a pas changé la direction, seulement la norme
@@ -284,6 +285,6 @@ void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids);
 
 void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids);
 
-void implementation_boids(std::vector<Boid> &boids_tab);
+// void implementation_boids(std::vector<Boid> &boids_tab);
 
 void affichage_boids(std::vector<Boid> &boids_tab);
