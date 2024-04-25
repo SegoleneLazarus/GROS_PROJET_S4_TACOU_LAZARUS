@@ -7,7 +7,7 @@ float     Rendu::_uShininess      = .006f;         // [GUI]
 glm::vec3 Rendu::lightDir{17.36f, 15.48f, 7.81f}; // [GUI]
 
 
-Rendu::Rendu(p6::Context* ctx, TrackballCamera* camera)
+Rendu::Rendu(p6::Context* ctx, Camera* camera)
     : _ctx(ctx), camera(camera)
 {
     _ctx->maximize_window();
