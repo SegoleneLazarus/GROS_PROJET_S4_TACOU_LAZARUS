@@ -29,8 +29,8 @@ public:
   glm::vec3 vit;
   Boid(float sepRad = 0.1, float cohRad = 0.1, float aliRad = 0.3) // 3D
       : pos(loi_uniforme(-1, 1), loi_uniforme(-1, 1), loi_uniforme(-1, 1)),
-        vit(loi_uniforme(-0.01, 0.01), loi_uniforme(-0.01, 0.01),
-            loi_uniforme(-0.01, 0.01)),
+        vit(5 * loi_uniforme(-0.01, 0.01), 5 * loi_uniforme(-0.01, 0.01),
+            5 * loi_uniforme(-0.01, 0.01)),
         separationRadius(sepRad), cohesionRadius(cohRad),
         alignementRadius(aliRad), separationForce(1), cohesionForce(1),
         alignementForce(1), DND_alignement(5) {}
@@ -50,11 +50,11 @@ public:
   //       }
 
   void limites() { // 3D
-    if (abs(pos.x) >= 1)
+    if (abs(pos.x) >= arrete_cube)
       pos.x = -pos.x / abs(pos.x);
-    if (abs(pos.y) >= 1)
+    if (abs(pos.y) >= arrete_cube)
       pos.y = -pos.y / abs(pos.y);
-    if (abs(pos.z) >= 1)
+    if (abs(pos.z) >= arrete_cube)
       pos.z = -pos.z / abs(pos.z);
   }
 
@@ -240,7 +240,6 @@ public:
     } else {
       separationForce *= multiplicateur;
       vit *= multiplicateur;
-
       alignementForce *= diviseur;
       cohesionForce *= diviseur;
     }
@@ -264,12 +263,20 @@ public:
           norme; // on a pas changé la direction, seulement la norme
   }
 
-  Transform transform_boid(Transform transfBoid) { // 3D
-    transfBoid.setPosition(glm::vec3(pos.x, pos.y, pos.z));
-    transfBoid.setRotation(glm::vec3(angle_calculum(vit.y, vit.z),
-                                     angle_calculum(vit.z, vit.x),
-                                     angle_calculum(vit.x, vit.y)));
-    return transfBoid;
+  glm::vec3 transform_boid_pos() { // 3D
+    return glm::vec3(pos.x, pos.y, pos.z);
+  }
+  glm::vec3 transform_boid_rot() { // 3D
+    glm::vec3 v(angle_calculum(vit.y, vit.z), angle_calculum(vit.z, vit.x),
+                angle_calculum(vit.x, vit.y));
+    return v;
+  }
+
+  void change_forces(float alignement_f, float separation_f, float cohesion_f) {
+
+    alignementForce = (alignementForce + alignement_f * 3) / 4.f;
+    separationForce = (separationForce + separation_f * 3) / 4.f;
+    cohesionForce = (cohesionForce + cohesion_f * 3) / 4.f;
   }
 };
 

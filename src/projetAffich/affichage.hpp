@@ -21,11 +21,11 @@ struct Scene {
   Objet3D environnement{"cube", "3D.vs.glsl", "tex3D.fs.glsl"};
   Objet3D ovocyte{"ovocyte", "3D.vs.glsl", "tex3D.fs.glsl"};
   Objet3D spermato{"spermato", "3D.vs.glsl", "tex3D.fs.glsl"};
-  // Objet3D spermato2{"spermato2", "3D.vs.glsl", "tex3D.fs.glsl"};
-  // Objet3D spermato3{"spermato3", "3D.vs.glsl", "tex3D.fs.glsl"};
-  Objet3D arbre{"arbre", "3D.vs.glsl", "tex3D.fs.glsl"};
-  Objet3D champi{"champi", "3D.vs.glsl", "tex3D.fs.glsl"};
-  Objet3D poissong{"poissong", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D spermato_m790{"spermato_m790", "3D.vs.glsl", "tex3D.fs.glsl"};
+  Objet3D spermato_tete{"spermato_tete", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D arbre{"arbre", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D champi{"champi", "3D.vs.glsl", "tex3D.fs.glsl"};
+  // Objet3D poissong{"poissong", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class Rendu {
@@ -49,7 +49,7 @@ public:
 
 class ProjetAffich {
 private:
-  p6::Context _ctx = p6::Context{{.title = "caca"}};
+  p6::Context _ctx = p6::Context{{.title = "La rencontre"}};
   Rendu rendu;
   TrackballCamera camera;
   // Joueur  joueur;
@@ -64,18 +64,21 @@ private:
   }
 
   void draw_boids(std::vector<Boid> &boids_tab, int precision) {
-    Transform transfBoid{{1.f, 1.f, 1.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}};
+    Transform transfBoid{
+        {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {0.01f, 0.01f, 0.01f}};
     for (auto &boidy : boids_tab) {
-      transfBoid = boidy.transform_boid(transfBoid);
+      transfBoid.setPosition(boidy.transform_boid_pos());
+      transfBoid.setRotation(boidy.transform_boid_rot());
+
       if (precision == 1) {
         rendu.dessinObjet(transfBoid.getTransform(), scene.spermato);
       }
-      // if (precision == 2) {
-      //   rendu.dessinObjet(transfBoid.getTransform(), scene.spermato2);
-      // }
-      // if (precision == 3) {
-      //   rendu.dessinObjet(transfBoid.getTransform(), scene.spermato3);
-      // }
+      if (precision == 2) {
+        rendu.dessinObjet(transfBoid.getTransform(), scene.spermato_m790);
+      }
+      if (precision == 3) {
+        rendu.dessinObjet(transfBoid.getTransform(), scene.spermato_tete);
+      }
     }
   }
 
@@ -87,10 +90,11 @@ private:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    Transform transfEnviro{
-        {1.f, -1.f, 3.f}, {0.f, 0.f, 0.f}, scene.taille / scene.baseCube};
-    Transform transfDecor{
-        {1.f, -1.f, 3.f}, {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}};
+    Transform transfEnviro{{1.f, -1.f, 3.f},
+                           {0.f, 0.f, 0.f},
+                           arrete_cube * scene.taille / scene.baseCube};
+    // Transform transfDecor{
+    //     {1.f, -1.f, 3.f}, {0.f, 0.f, 0.f}, {0.1f, 0.1f, 0.1f}};
     rendu.dessinObjet(transfEnviro.getTransform(), scene.environnement);
     // rendu.dessinObjet(transfEnviro.getTransform(), scene.poissong);
     // rendu.dessinObjet(transfDecor.getTransform(), scene.champi);
@@ -107,9 +111,9 @@ private:
   void cleanUp() {
     scene.environnement.clear();
     scene.spermato.clear();
-    scene.poissong.clear();
-    scene.champi.clear();
-    scene.arbre.clear();
+    // scene.poissong.clear();
+    // scene.champi.clear();
+    // scene.arbre.clear();
     // scene.ovocyte.clear();
     scene.environnement.clear();
   }
@@ -127,11 +131,12 @@ public:
   ~ProjetAffich() { cleanUp(); }
 
   void update(std::vector<Boid> &boids_tab) {
+    int precision = 1;
     _ctx.update = [&]() {
       // game not so Logic();
 
       // Setup context GUI
-      int precision = 1;
+
       GUI::initializeGUI(boids_tab, &precision);
 
       implementation_boids(boids_tab);
