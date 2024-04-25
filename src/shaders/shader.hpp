@@ -1,13 +1,12 @@
 #pragma once
 #include "p6/p6.h"
 
-class Shader {
+class Shader
+{
 public:
-    // Shader program
     p6::Shader shader;
-    GLint      ID;
+    GLint ID;
 
-    // Uniform locations in the shader program
     GLint uVMatrix;
     GLint uMMatrix;
     GLint uMVPMatrix;
@@ -21,6 +20,5 @@ public:
     GLint uLightPos_vs;
     GLint uLightIntensity;
 
-    // Constructor initializes shader with paths to vertex and fragment shader source files, default to basic shaders
-    explicit Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+    explicit Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath);
 };

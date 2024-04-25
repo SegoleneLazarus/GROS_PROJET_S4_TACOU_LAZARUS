@@ -20,6 +20,9 @@ void pushb_boids(std::vector<Boid> &boids_tab, int nombre_boids) {
 }
 
 void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids) {
+  nombre_boids -= duree_de_vie(0.001, boids_tab);
+  nombre_boids += generation_boids();
+
   if (nombre_boids > boids_tab.size()) {
     pushb_boids(boids_tab, nombre_boids - boids_tab.size());
   } else if (nombre_boids < boids_tab.size()) {
@@ -27,10 +30,18 @@ void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids) {
   }
 }
 
-// void implementation_boids(std::vector<Boid> &boids_tab) {
+int  duree_de_vie(float p,std::vector<Boid> &boids_tab)//simule une durée de vie à valeure aléatoire définie par une loi géométrique simulée par une série d'épreuves de Bernouilli
+{
+  int somme = 0;
+  for (auto &boidy : boids_tab)// le fait pour tout les boids en même temps 
+    somme += Bernouilli(p);
+return somme;
+}
 
-//   for (auto &boidy : boids_tab) {
-//     boidy.deplacement_boids(boids_tab);
-//   }
-// }
+int generation_boids()
+{
+  //sin(x) * x;
+  return 1;
+}
+
 

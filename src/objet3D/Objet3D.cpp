@@ -1,13 +1,13 @@
 #include "Objet3D.hpp"
 
-Objet3D::Objet3D(const std::string& nom, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+Objet3D::Objet3D(const std::string &nom, const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
     : modele(nom), texture(nom), shader(vertexShaderPath, fragmentShaderPath)
 {
     defineVBO();
     defineVAO();
 };
 
-Objet3D::Objet3D(const std::string& nom, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID, const std::string& lodID)
+Objet3D::Objet3D(const std::string &nom, const std::string &vertexShaderPath, const std::string &fragmentShaderPath, const std::string &skinID, const std::string &lodID)
     : modele(nom + lodID), texture(nom + skinID), shader(vertexShaderPath, fragmentShaderPath)
 {
     defineVBO();
@@ -16,8 +16,8 @@ Objet3D::Objet3D(const std::string& nom, const std::string& vertexShaderPath, co
 
 void Objet3D::defineVBO()
 {
-    glGenBuffers(1, &vbo);            
-    glBindBuffer(GL_ARRAY_BUFFER, vbo); 
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glBufferData(GL_ARRAY_BUFFER, modele.getVertices().size() * sizeof(glimac::ShapeVertex), modele.getVertices().data(), GL_STATIC_DRAW);
 
@@ -27,19 +27,19 @@ void Objet3D::defineVBO()
 void Objet3D::defineVAO()
 {
     glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);   
+    glBindVertexArray(vao);
 
-    static constexpr GLuint vertex_attr_position  = 0;
-    static constexpr GLuint vertex_attr_normal    = 1;
+    static constexpr GLuint vertex_attr_position = 0;
+    static constexpr GLuint vertex_attr_normal = 1;
     static constexpr GLuint vertex_attr_texcoords = 2;
     glEnableVertexAttribArray(vertex_attr_position);
     glEnableVertexAttribArray(vertex_attr_normal);
     glEnableVertexAttribArray(vertex_attr_texcoords);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(vertex_attr_position, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, position));
-    glVertexAttribPointer(vertex_attr_normal, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, normal));
-    glVertexAttribPointer(vertex_attr_texcoords, 2, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
+    glVertexAttribPointer(vertex_attr_position, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid *)offsetof(glimac::ShapeVertex, position));
+    glVertexAttribPointer(vertex_attr_normal, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid *)offsetof(glimac::ShapeVertex, normal));
+    glVertexAttribPointer(vertex_attr_texcoords, 2, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid *)offsetof(glimac::ShapeVertex, texCoords));
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

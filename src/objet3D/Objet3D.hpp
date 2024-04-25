@@ -6,27 +6,28 @@
 #include "p6/p6.h"
 
 // comment gérer un objet 3D bienvenue dans mon podcast
-class Objet3D {
+class Objet3D
+{
 private:
-    Modele   modele;
+    Modele modele;
     Texture texture;
-    Shader  shader;
+    Shader shader;
 
     GLuint vbo{};
     GLuint vao{};
 
 public:
-    explicit Objet3D(const std::string& nom = "cube", const std::string& vertexShaderPath = "3D.vs.glsl", const std::string& fragmentShaderPath = "tex3D.fs.glsl");
-    explicit Objet3D(const std::string& nom, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID, const std::string& lodID);
+    explicit Objet3D(const std::string &nom = "cube", const std::string &vertexShaderPath = "3D.vs.glsl", const std::string &fragmentShaderPath = "tex3D.fs.glsl");
+    explicit Objet3D(const std::string &nom, const std::string &vertexShaderPath, const std::string &fragmentShaderPath, const std::string &skinID, const std::string &lodID);
 
     void defineVBO();
     void defineVAO();
 
     std::vector<glimac::ShapeVertex> getMesh() const { return modele.getVertices(); };
-    GLuint                           getVAO() const { return vao; };
-    const Modele&                     getModel() const { return modele; };
-    const Texture&                   getTexture() const { return texture; };
-    const Shader&                    getShader() const { return shader; };
+    GLuint getVAO() const { return vao; };
+    const Modele &getModel() const { return modele; };
+    const Texture &getTexture() const { return texture; };
+    const Shader &getShader() const { return shader; };
 
     // Cleans up the resources
     void clear();

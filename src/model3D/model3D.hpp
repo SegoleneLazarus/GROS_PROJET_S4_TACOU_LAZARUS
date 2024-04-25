@@ -3,17 +3,19 @@
 #include "tiny_obj_loader.h"
 #include "../src-common/glimac/common.hpp"
 
-class Modele {
+class Modele
+{
 private:
     std::vector<glimac::ShapeVertex> vertices;
-    std::string                      chemin;
+    std::string chemin;
 
     bool chargeModele();
 
 public:
-    explicit Modele(const std::string& name);
-    
-    const std::vector<glimac::ShapeVertex>& getVertices() const { 
-        return vertices; 
+    explicit Modele(const std::string &name);
+
+    const std::vector<glimac::ShapeVertex> &getVertices() const
+    {
+        return vertices;
     }
 };

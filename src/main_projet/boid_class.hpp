@@ -288,3 +288,7 @@ void actualise_boids_tab(std::vector<Boid> &boids_tab, int nombre_boids);
 // void implementation_boids(std::vector<Boid> &boids_tab);
 
 void affichage_boids(std::vector<Boid> &boids_tab);
+
+int duree_de_vie(float p, std::vector<Boid> &boids_tab);
+
+int generation_boids();

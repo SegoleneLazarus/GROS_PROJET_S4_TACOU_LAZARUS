@@ -4,7 +4,8 @@
 
 #include <imgui.h>
 
-class GUI {
+class GUI
+{
 private:
   static float alignement_force;
   static float separation_force;
@@ -12,5 +13,5 @@ private:
   static int precision;
 
 public:
-  static void initializeGUI(std::vector<Boid> &boids_tab, int *precision);
+  static void initializeGUI(std::vector<Boid> &boids_tab, int &precision);
 };

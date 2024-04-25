@@ -1,24 +1,22 @@
 #include "model3D.hpp"
 
-Modele::Modele(const std::string& nomDuFichier) 
+Modele::Modele(const std::string &nomDuFichier)
     : chemin("assets/models/" + nomDuFichier + ".obj")
 {
-    if (!chargeModele()) // Vérifie le chargement du modèle 3D
+    if (!chargeModele())
     {
         std::cerr << "chargerModèle() : Impossible de charger le modèle [" << nomDuFichier << "]." << std::endl;
     }
 }
 
-// Fonction pour charger le modèle
 bool Modele::chargeModele()
 {
-    tinyobj::attrib_t                attributs;
-    std::vector<tinyobj::shape_t>    formes;
+    tinyobj::attrib_t attributs;
+    std::vector<tinyobj::shape_t> formes;
     std::vector<tinyobj::material_t> materiaux;
-    std::string                      erreur;
-    std::string                      avertissement;
+    std::string erreur;
+    std::string avertissement;
 
-    // Charge le fichier objet
     const bool chargementReussi = tinyobj::LoadObj(&attributs, &formes, &materiaux, &avertissement, &erreur, chemin.c_str());
     if (!chargementReussi)
     {
@@ -26,27 +24,23 @@ bool Modele::chargeModele()
         return chargementReussi;
     }
 
-    // Parcourt les formes du modèle
-    for (const auto& forme : formes)
+    for (const auto &forme : formes)
     {
-        for (const auto& index : forme.mesh.indices)
+        for (const auto &index : forme.mesh.indices)
         {
             glm::vec3 position(
                 attributs.vertices[3 * index.vertex_index + 0],
                 attributs.vertices[3 * index.vertex_index + 1],
-                attributs.vertices[3 * index.vertex_index + 2]
-            );
+                attributs.vertices[3 * index.vertex_index + 2]);
 
             glm::vec3 normal(
                 attributs.normals[3 * index.normal_index + 0],
                 attributs.normals[3 * index.normal_index + 1],
-                attributs.normals[3 * index.normal_index + 2]
-            );
+                attributs.normals[3 * index.normal_index + 2]);
 
             glm::vec2 texCoord(
                 attributs.texcoords[2 * index.texcoord_index + 0],
-                attributs.texcoords[2 * index.texcoord_index + 1]
-            );
+                attributs.texcoords[2 * index.texcoord_index + 1]);
 
             vertices.emplace_back(position, normal, texCoord);
         }

@@ -169,13 +169,22 @@ float angle_calculum(float x,float y)
   return std::acos(x / norme);
 }
 
-// int Bernouilli(float p)
-// {
-//   float random rand01();
-//   if (random>p)
-//     return 0;
-//   else
-//     return 1;
-// }
+int Bernouilli(float p)
+{
+  float random= rand01();
+  if (random>p)
+    return 0;
+  else
+    return 1;
+}
 
-// Binomiale(float p)
+int Binomiale(int n,float p)
+{
+  int somme = 0;
+  for (int i = 0; i < n;i++)
+  {
+    if (rand01()<p)
+      somme++;
+  }
+  return somme;
+}

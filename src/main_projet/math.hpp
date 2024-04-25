@@ -12,5 +12,9 @@ int chaine_de_markov(int biome_actuel);
 
 float angle_calculum(float x, float y);
 
+int Bernouilli(float p);
+
+int Binomiale(float p);
+
 // float CLT(); // return a random number from a standard normal distribution
 // following the Central limit theorem
